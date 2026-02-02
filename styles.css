@@ -500,6 +500,7 @@ html, body {
   aspect-ratio: 4/3;
   object-fit: cover;
   background: #E8E8E8;
+  display: block;
 }
 
 /* ===== 하단 액션 버튼 (픽업 주류 고르기 / 콜키지 예약하기) ===== */
@@ -1283,6 +1284,7 @@ html, body {
   height: 100%;
   object-fit: cover;
   background: #3A3A4A;
+  display: block;
 }
 
 /* 썸네일 이미지 */
@@ -1291,6 +1293,7 @@ html, body {
   height: 100%;
   object-fit: cover;
   background: #4A3A3A;
+  display: block;
 }
 
 /* ===== 상세 페이지 - 매장 기본 정보 ===== */
@@ -1499,7 +1502,7 @@ html, body {
   overflow: hidden;
 }
 
-.menu-board__img { width: 100%; aspect-ratio: 1; background: #E8E4DE; object-fit: cover; }
+.menu-board__img { width: 100%; aspect-ratio: 1; background: #E8E4DE; object-fit: cover; display: block; }
 
 /* 추천 메뉴 아이템 */
 .menu-item {
@@ -1516,6 +1519,7 @@ html, body {
   background: #E8E4DE;
   flex-shrink: 0;
   object-fit: cover;
+  display: block;
 }
 
 .menu-item__info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
@@ -1583,7 +1587,7 @@ html, body {
   overflow: hidden;
 }
 
-.review-photos__img { width: 100%; aspect-ratio: 4/3; background: #E0DDD8; object-fit: cover; }
+.review-photos__img { width: 100%; aspect-ratio: 4/3; background: #E0DDD8; object-fit: cover; display: block; }
 
 /* 더보기 버튼 */
 .more-btn {
