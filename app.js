@@ -554,8 +554,8 @@ function openDetailPage(store) {
 
   // Corkage section
   const cork = DETAIL_EXTRA.corkage;
-  const drinkImages = { '와인': '와인.png', '사케': '사케.png', '위스키': '위스키.png', '맥주': '백주.png', '우리술': '우리술.png' };
-  const serviceImages = { '얼음': '얼음.png', '와인잔': '와인잔.png', '위스키잔': '위스키잔.png', '사케잔': '사케잔.png', '칠링 바스켓': '칠링바스켓.png' };
+  const drinkImages = { '와인': './wine.png', '사케': './sake.png', '위스키': './whiskey.png', '백주': './baijiu.png', '우리술': './korean-liquor.png' };
+  const serviceImages = { '얼음': './ice.png', '와인잔': './wine-glass.png', '위스키잔': './whiskey-glass.png', '사케잔': './sake-glass.png', '칠링 바스켓': './chilling-basket.png' };
 
   document.getElementById('section-corkage').innerHTML = `
     <div class="detail-section__title">콜키지</div>
@@ -768,7 +768,7 @@ const RES_DRINKS = [
   { name: '와인', price: 20000, priceLabel: '병당 20,000원' },
   { name: '사케', price: 10000, priceLabel: '병당 10,000원' },
   { name: '위스키', price: 20000, priceLabel: '병당 20,000원' },
-  { name: '맥주', price: 10000, priceLabel: '병당 10,000원' },
+  { name: '백주', price: 10000, priceLabel: '병당 10,000원' },
 ];
 const TIME_SLOTS = ['17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30'];
 
@@ -780,10 +780,10 @@ let resCalMonth = null; // {year, month}
 
 // Drink SVGs (reuse from detail page)
 const resDrinkImages = {
-  '와인': '와인.png',
-  '사케': '사케.png',
-  '위스키': '위스키.png',
-  '맥주': '백주.png',
+  '와인': './wine.png',
+  '사케': './sake.png',
+  '위스키': './whiskey.png',
+  '백주': './baijiu.png',
 };
 
 function openReservationPage(fromPage) {
