@@ -1,0 +1,1676 @@
+/* ===== 초기화 및 기본 설정 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* CSS 변수 (색상, 크기 등) */
+:root {
+  --primary: #FF6B35;
+  --bg: #FFFFFF;
+  --text: #222222;
+  --text-light: #888888;
+  --border: #E5E5E5;
+  --tab-active: #222222;
+  --tab-inactive: #AAAAAA;
+  --bottom-nav-height: 56px;
+}
+
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== 앱 껍데기 (아이폰 17 비율 ~393x852) ===== */
+.app-shell {
+  width: 100%;
+  max-width: 393px;
+  height: 100vh;
+  max-height: 852px;
+  margin: 0 auto;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 모바일 반응형 */
+@media (max-width: 393px) {
+  .app-shell {
+    max-width: 100%;
+    max-height: 100vh;
+  }
+}
+
+/* ===== 상태 바 (시간, 배터리 등) ===== */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.status-bar__time {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.status-bar__icons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 신호 막대 아이콘 */
+.status-bar__signal {
+  display: flex;
+  gap: 1px;
+  align-items: flex-end;
+}
+
+.status-bar__signal span {
+  width: 3px;
+  background: #222;
+  border-radius: 1px;
+}
+
+/* 배터리 아이콘 */
+.status-bar__battery {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.battery-body {
+  width: 22px;
+  height: 11px;
+  border: 1.5px solid #222;
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.battery-body::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: 60%;
+  background: #222;
+  border-radius: 1px;
+}
+
+.battery-tip {
+  width: 2px;
+  height: 5px;
+  background: #222;
+  border-radius: 0 1px 1px 0;
+}
+
+/* ===== 검색 바 ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 16px 8px;
+  flex-shrink: 0;
+}
+
+/* 검색 입력 필드 */
+.search-bar__input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F5F5F5;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.search-bar__input svg {
+  flex-shrink: 0;
+}
+
+/* 도움말 버튼 (?) */
+.search-bar__help {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ===== 상단 탭 바 (전체 / 콜키지) ===== */
+.tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.tab-bar__item {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--tab-inactive);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+}
+
+/* 활성 탭 */
+.tab-bar__item.active {
+  color: var(--tab-active);
+}
+
+/* 활성 탭 밑줄 */
+.tab-bar__item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: var(--tab-active);
+}
+
+/* ===== 필터 칩 (전체, 파트너, 콜키지 가능 등) ===== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: transparent;
+}
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  transition: all 0.2s;
+}
+
+/* 활성 필터 칩 */
+.filter-chip.active {
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
+}
+
+/* 필터 칩 앞 색상 점 */
+.filter-chip__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.filter-chip__dot--partner { background: #222; }
+.filter-chip__dot--corkage { background: var(--primary); }
+.filter-chip__dot--free { background: var(--primary); }
+
+/* ===== 지도 컨테이너 ===== */
+.map-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 지도 배경 이미지 */
+.map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== 지도 핀 ===== */
+.map-pin {
+  position: absolute;
+  width: 28px;
+  height: 36px;
+  cursor: pointer;
+  transform: translate(-50%, -100%);
+  z-index: 5;
+  transition: transform 0.15s;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* 핀 호버/터치 효과 */
+.map-pin:hover,
+.map-pin:active {
+  transform: translate(-50%, -100%) scale(1.2);
+  z-index: 20;
+}
+
+.map-pin svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== 바텀시트 (핀 클릭 시 올라오는 패널) ===== */
+.bottom-sheet-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* 바텀시트 활성 상태 (반투명 배경) */
+.bottom-sheet-overlay.active {
+  pointer-events: auto;
+  background: rgba(0,0,0,0.15);
+}
+
+/* 바텀시트 확장 상태 (배경 투명) */
+.bottom-sheet-overlay.expanded {
+  background: none;
+}
+
+/* 바텀시트 본체 */
+.bottom-sheet {
+  background: var(--bg);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 55%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+/* 바텀시트 올라온 상태 */
+.bottom-sheet-overlay.active .bottom-sheet {
+  transform: translateY(0);
+}
+
+/* 바텀시트 전체 확장 상태 */
+.bottom-sheet-overlay.expanded .bottom-sheet {
+  max-height: calc(100% - 0px);
+  height: 100%;
+  border-radius: 0;
+}
+
+/* 바텀시트 드래그 핸들 */
+.bottom-sheet__handle {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 6px;
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.bottom-sheet__handle-bar {
+  width: 36px;
+  height: 4px;
+  background: #D9D9D9;
+  border-radius: 2px;
+}
+
+/* 바텀시트 스크롤 콘텐츠 */
+.bottom-sheet__content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 16px;
+}
+
+/* ===== 지도 툴팁 (핀 클릭 시 말풍선) ===== */
+.map-tooltip {
+  position: absolute;
+  z-index: 25;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg);
+  border-radius: 20px;
+  padding: 5px 12px 5px 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  white-space: nowrap;
+  transform: translate(-50%, -120%);
+  pointer-events: none;
+}
+
+.map-tooltip.visible { display: flex; }
+
+/* 툴팁 배지 */
+.map-tooltip__badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.map-tooltip__badge--corkage { background: #FFF0E8; color: var(--primary); }
+.map-tooltip__badge--free { background: #FFE8E8; color: #E53E3E; }
+
+/* 툴팁 매장명 */
+.map-tooltip__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ===== 매장 카드 (바텀시트 내 매장 정보) ===== */
+.store-card { padding: 16px; }
+.store-card + .store-card { border-top: 8px solid #F5F5F5; }
+
+/* 카드 헤더 (배지 + 이름 + 카테고리 + 찜) */
+.store-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* 매장 배지 (콜키지 가능 / 콜키지 무료) */
+.store-card__badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.store-card__badge--corkage { background: #FFF0E8; color: var(--primary); }
+.store-card__badge--free { background: #FFE8E8; color: #E53E3E; }
+
+/* 매장명 */
+.store-card__name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* 매장 카테고리 */
+.store-card__category {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-left: 4px;
+}
+
+/* 찜 버튼 */
+.store-card__heart {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.store-card__heart svg { width: 22px; height: 22px; color: #D9D9D9; }
+
+/* 매장 정보 행 (주소, 시간) */
+.store-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.store-card__info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+.store-card__info-row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-light); }
+
+/* 주소 복사 버튼 */
+.store-card__copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 4px;
+}
+
+.store-card__copy-btn svg { width: 13px; height: 13px; color: var(--primary); }
+
+/* ===== 매장 사진 (2열 그리드) ===== */
+.store-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.store-photos__img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  background: #E8E8E8;
+}
+
+/* ===== 하단 액션 버튼 (픽업 주류 고르기 / 콜키지 예약하기) ===== */
+.store-actions {
+  display: flex;
+  gap: 10px;
+  padding: 0 16px 16px;
+}
+
+.store-actions__btn {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+}
+
+/* 픽업 주류 고르기 버튼 (테두리) */
+.store-actions__btn--pickup {
+  background: #FFF;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+/* 콜키지 예약하기 버튼 (채워진) */
+.store-actions__btn--corkage {
+  background: var(--primary);
+  color: #FFF;
+}
+
+/* ===== 확장 시 바텀시트 필터 바 ===== */
+.bottom-sheet__filters {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.bottom-sheet-overlay.expanded .bottom-sheet__filters {
+  display: flex;
+}
+
+/* ===== 콜키지 예약 페이지 ===== */
+.reservation-page {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  flex-direction: column;
+}
+
+.reservation-page.active { display: flex; }
+
+/* 예약 페이지 헤더 */
+.res-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  height: 48px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* 뒤로가기 / 닫기 버튼 */
+.res-header__back,
+.res-header__close {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.res-header__back svg,
+.res-header__close svg { width: 22px; height: 22px; color: #333; }
+
+/* 예약 페이지 제목 */
+.res-header__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* 예약 페이지 스크롤 영역 */
+.res-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 기본 예약금 안내 배너 */
+.res-notice {
+  padding: 16px;
+  background: #FFF8F2;
+  border-bottom: 1px solid #FFE8D6;
+}
+
+.res-notice__sub { font-size: 12px; color: #999; margin-bottom: 6px; }
+
+.res-notice__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.res-notice__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.res-notice__price { font-size: 18px; font-weight: 800; color: var(--primary); }
+
+/* 예약 페이지 섹션 구분 */
+.res-section {
+  padding: 20px 16px;
+  border-bottom: 8px solid #F5F5F5;
+}
+
+.res-section__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+/* ===== 예약 페이지 - 주종 카드 ===== */
+.res-drinks {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.res-drinks::-webkit-scrollbar { display: none; }
+
+/* 개별 주종 카드 */
+.res-drink-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+  max-width: 100px;
+  background: #F5F5F5;
+  border-radius: 12px;
+  padding: 10px 8px 8px;
+  gap: 2px;
+}
+
+/* 주종 이름 */
+.res-drink-card__name { font-size: 14px; font-weight: 700; color: var(--text); }
+
+/* 주종 가격 */
+.res-drink-card__price { font-size: 10px; color: var(--text-light); white-space: nowrap; }
+
+/* 주종 이미지 영역 */
+.res-drink-card__img {
+  width: 60px;
+  height: 80px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.res-drink-card__img svg,
+.res-drink-card__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 수량 조절 버튼 컨테이너 */
+.res-drink-card__controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* +/- 원형 버튼 */
+.res-drink-card__ctrl-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid #D0D0D0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.res-drink-card__ctrl-btn svg { width: 14px; height: 14px; color: #888; }
+
+/* 활성 상태 (수량 1 이상) */
+.res-drink-card__ctrl-btn--active { border-color: var(--primary); }
+.res-drink-card__ctrl-btn--active svg { color: var(--primary); }
+
+/* 수량 텍스트 */
+.res-drink-card__qty {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 14px;
+  text-align: center;
+}
+
+/* ===== 예약 페이지 - 날짜 선택 버튼 ===== */
+.res-date-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  cursor: pointer;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 14px;
+}
+
+/* 날짜 선택된 상태 */
+.res-date-picker.selected {
+  border-color: var(--primary);
+  background: #FFF8F2;
+  color: var(--text);
+}
+
+.res-date-picker.selected span { color: var(--text); font-weight: 600; }
+
+/* ===== 예약 페이지 - 캘린더 ===== */
+.res-calendar { display: none; margin-bottom: 14px; }
+.res-calendar.open { display: block; }
+
+/* 캘린더 헤더 (이전/다음 월) */
+.res-cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  margin-bottom: 8px;
+}
+
+.res-cal-header__title { font-size: 15px; font-weight: 700; color: var(--text); }
+
+.res-cal-header__btn {
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.res-cal-header__btn svg { width: 18px; height: 18px; color: #888; }
+
+/* 요일 헤더 (일~토) */
+.res-cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+/* 날짜 그리드 */
+.res-cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+/* 개별 날짜 버튼 */
+.res-cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.res-cal-day:hover { background: #F5F5F5; }
+.res-cal-day.empty { pointer-events: none; }
+.res-cal-day.today { font-weight: 700; }
+.res-cal-day.selected { background: var(--primary); color: #fff; font-weight: 700; }
+.res-cal-day.past { color: #D0D0D0; pointer-events: none; }
+
+/* ===== 예약 페이지 - 시간 슬롯 ===== */
+.res-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.res-time-slot {
+  padding: 10px 0;
+  width: calc(25% - 6px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 14px;
+  color: var(--text);
+  text-align: center;
+  cursor: pointer;
+}
+
+.res-time-slot:hover { border-color: #CCC; }
+
+/* 선택된 시간 */
+.res-time-slot.selected {
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 700;
+  background: #FFF8F2;
+}
+
+/* ===== 예약 페이지 - 인원수 카운터 ===== */
+.res-counter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.res-counter__btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid #D0D0D0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.res-counter__btn svg { color: #888; }
+
+.res-counter__value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ===== 예약 페이지 - 하단 요약 카드 ===== */
+.res-summary {
+  background: #F7F7F7;
+  padding: 16px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+}
+
+/* 요약 행 (주종, 인원수 등) */
+.res-summary__row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.res-summary__label { color: #555; min-width: 85px; flex-shrink: 0; }
+.res-summary__detail { flex: 1; color: #888; font-size: 12px; text-align: right; padding-right: 4px; }
+.res-summary__value { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+/* 최종 예상 금액 */
+.res-summary__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #E0E0E0;
+}
+
+.res-summary__total-label { font-size: 14px; font-weight: 700; color: var(--primary); }
+.res-summary__total-value { font-size: 20px; font-weight: 800; color: var(--primary); }
+
+/* ===== 예약 페이지 - 하단 버튼 (닫기 / 예약하러 가기) ===== */
+.res-bottom {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px 16px;
+  flex-shrink: 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.res-bottom__close {
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.res-bottom__submit {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ===== 예약 확인 페이지 ===== */
+.confirm-page {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 300;
+  background: var(--bg);
+  flex-direction: column;
+}
+
+.confirm-page.active { display: flex; }
+
+/* 예약 확인 헤더 */
+.confirm-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  height: 48px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.confirm-header__back {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.confirm-header__back svg { width: 22px; height: 22px; color: #333; }
+
+.confirm-header__title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* 예약 확인 스크롤 영역 */
+.confirm-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+}
+
+.confirm-subtitle { font-size: 14px; color: #555; margin-bottom: 16px; }
+
+/* 예약 정보 카드 (매장 정보, 예약자 정보 등) */
+.confirm-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+  margin-bottom: 16px;
+}
+
+.confirm-card__title { font-size: 17px; font-weight: 800; color: var(--text); margin-bottom: 12px; }
+
+.confirm-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.confirm-card__label { color: #888; min-width: 90px; }
+.confirm-card__value { color: var(--text); font-weight: 500; text-align: right; }
+.confirm-card__value--highlight { color: var(--primary); font-weight: 700; }
+
+/* ===== 예약자 정보 (이름 변경, 연락처 확인) ===== */
+.confirm-booker__name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.confirm-booker__name { font-size: 16px; font-weight: 700; color: var(--text); }
+
+/* 이름 편집 입력 필드 */
+.confirm-booker__name-input {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  border: none;
+  border-bottom: 2px solid var(--primary);
+  outline: none;
+  background: transparent;
+  width: 120px;
+  padding: 2px 0;
+  display: none;
+}
+
+.confirm-booker__name-input.active { display: inline-block; }
+.confirm-booker__name.hidden { display: none; }
+
+/* 변경 버튼 */
+.confirm-booker__change-btn {
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+}
+
+/* 연락처 행 */
+.confirm-booker__phone-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* 연락처 편집 입력 필드 */
+.confirm-booker__phone-input {
+  font-size: 14px;
+  color: var(--text);
+  border: none;
+  border-bottom: 2px solid var(--primary);
+  outline: none;
+  background: transparent;
+  width: 130px;
+  padding: 2px 0;
+  display: none;
+}
+
+.confirm-booker__phone-input.active { display: inline-block; }
+.confirm-booker__phone.hidden { display: none; }
+
+/* 연락처 확인 버튼 */
+.confirm-booker__verify-btn {
+  padding: 4px 10px;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  background: var(--bg);
+  font-size: 12px;
+  color: var(--primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ===== 매장 요청사항 입력 ===== */
+.confirm-request__textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+  min-height: 60px;
+  outline: none;
+  color: var(--text);
+}
+
+.confirm-request__textarea:focus { border-color: var(--primary); }
+
+/* 글자수 카운터 */
+.confirm-request__count { text-align: right; font-size: 12px; color: #999; margin-top: 4px; }
+
+/* ===== 결제 안내 카드 ===== */
+.confirm-payment {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.confirm-payment__title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+
+.confirm-payment__text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #555;
+}
+
+.confirm-payment__text svg { flex-shrink: 0; }
+
+/* 예약 확인 하단 버튼 (닫기 / 예약 확정하러 가기) */
+.confirm-bottom {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px 16px;
+  flex-shrink: 0;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.confirm-bottom__close {
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.confirm-bottom__submit {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ===== 모달 오버레이 (예약 완료, 알림 등) ===== */
+.modal-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,0.4);
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.modal-overlay.active { display: flex; }
+
+/* 모달 박스 */
+.modal-box {
+  background: var(--bg);
+  border-radius: 16px;
+  padding: 32px 24px 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+/* 모달 아이콘 (체크, 경고 등) */
+.modal-box__icon { width: 64px; height: 64px; margin: 0 auto 16px; }
+.modal-box__icon svg { width: 100%; height: 100%; }
+
+/* 모달 제목 */
+.modal-box__title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+
+/* 모달 설명 */
+.modal-box__desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 20px; }
+
+/* 모달 확인 버튼 */
+.modal-box__btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 경고 모달 아이콘 색상 */
+.modal-box--alert .modal-box__icon svg { color: var(--primary); }
+
+/* ===== 매장 상세 페이지 ===== */
+.detail-page {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  flex-direction: column;
+}
+
+.detail-page.active { display: flex; }
+
+/* 상세 페이지 헤더 (뒤로가기 + 찜, 갤러리 위 떠있음) */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  height: 44px;
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 110;
+}
+
+/* 뒤로가기 / 찜 원형 버튼 */
+.detail-header__back,
+.detail-header__heart {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.detail-header__back svg,
+.detail-header__heart svg { width: 22px; height: 22px; color: #333; }
+
+/* 상세 페이지 스크롤 영역 */
+.detail-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 72px;
+}
+
+/* ===== 상세 페이지 - 갤러리 ===== */
+.detail-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 200px 100px;
+  gap: 2px;
+}
+
+/* 메인 이미지 (전체 너비) */
+.detail-gallery__main {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #3A3A4A;
+}
+
+/* 썸네일 이미지 */
+.detail-gallery__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #4A3A3A;
+}
+
+/* ===== 상세 페이지 - 매장 기본 정보 ===== */
+.detail-info { padding: 16px; }
+
+.detail-info__badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.detail-info__name { font-size: 20px; font-weight: 800; color: var(--text); }
+.detail-info__category { font-size: 14px; color: var(--text-light); margin-left: 2px; }
+
+/* 정보 행 (주소, 전화, 시간) */
+.detail-info__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #555;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.detail-info__row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--text-light); }
+
+.detail-info__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 안내 배너 (휴게시간 등) */
+.detail-info__notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #FFF8F0;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #CC6B1E;
+  line-height: 1.5;
+}
+
+.detail-info__notice svg { width: 14px; height: 14px; flex-shrink: 0; color: #CC6B1E; margin-top: 1px; }
+
+/* ===== 상세 페이지 - 고정 섹션 탭 (콜키지/메뉴/AI요약/사진리뷰) ===== */
+.detail-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 105;
+  flex-shrink: 0;
+}
+
+.detail-tabs__item {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tab-inactive);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.detail-tabs__item.active { color: var(--tab-active); }
+
+.detail-tabs__item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: var(--tab-active);
+}
+
+/* ===== 상세 페이지 - 각 섹션 공통 ===== */
+.detail-section {
+  padding: 20px 16px;
+  border-top: 8px solid #F5F5F5;
+}
+
+.detail-section__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-section__title svg { width: 18px; height: 18px; }
+
+/* ===== 상세 페이지 - 콜키지 섹션 ===== */
+
+/* 콜키지 태그 칩 */
+.corkage-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.corkage-tag { padding: 6px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; background: #F5F5F5; color: #555; }
+.corkage-tag--highlight { background: #FFF0E8; color: var(--primary); font-weight: 600; }
+
+/* 주류 카드 가로 스크롤 */
+.corkage-drinks {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.corkage-drinks::-webkit-scrollbar { display: none; }
+
+/* 개별 주류 카드 */
+.corkage-drink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  background: #F5F5F5;
+  border-radius: 12px;
+  padding: 12px 10px 10px;
+  gap: 2px;
+}
+
+.corkage-drink__name { font-size: 14px; font-weight: 700; color: var(--text); }
+.corkage-drink__price { font-size: 11px; color: var(--text-light); margin-bottom: 4px; }
+
+/* 주류 병 이미지 영역 */
+.corkage-drink__icon {
+  width: 80px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.corkage-drink__icon svg,
+.corkage-drink__icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* 제공 서비스 아이콘 목록 */
+.corkage-services {
+  display: flex;
+  gap: 0;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.corkage-service {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+/* 서비스 아이콘 이미지 */
+.corkage-service__icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.corkage-service__icon svg,
+.corkage-service__icon img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+/* 서비스 이름 */
+.corkage-service__name { font-size: 11px; color: #555; text-align: center; }
+
+/* ===== 상세 페이지 - 메뉴 섹션 ===== */
+
+/* 메뉴판 이미지 그리드 */
+.menu-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.menu-board__img { width: 100%; aspect-ratio: 1; background: #E8E4DE; object-fit: cover; }
+
+/* 추천 메뉴 아이템 */
+.menu-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.menu-item__img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  background: #E8E4DE;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.menu-item__info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.menu-item__badge { font-size: 10px; font-weight: 700; color: var(--primary); background: #FFF0E8; padding: 2px 6px; border-radius: 3px; align-self: flex-start; }
+.menu-item__name { font-size: 15px; font-weight: 700; color: var(--text); }
+.menu-item__desc { font-size: 12px; color: var(--text-light); line-height: 1.4; }
+.menu-item__price { font-size: 16px; font-weight: 800; color: var(--text); margin-top: auto; }
+
+/* ===== 상세 페이지 - AI 요약 섹션 ===== */
+
+/* 만족도 점수 */
+.ai-score { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.ai-score__number { font-size: 28px; font-weight: 800; color: var(--text); }
+.ai-score__label { font-size: 14px; color: var(--text-light); }
+
+/* 막대 그래프 */
+.ai-bars { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.ai-bar { display: flex; align-items: center; gap: 10px; }
+.ai-bar__label { font-size: 13px; color: #555; width: 80px; flex-shrink: 0; }
+.ai-bar__track { flex: 1; height: 8px; background: #F0F0F0; border-radius: 4px; overflow: hidden; }
+.ai-bar__fill { height: 100%; border-radius: 4px; background: var(--primary); }
+.ai-bar__value { font-size: 13px; font-weight: 700; color: var(--text); width: 36px; text-align: right; }
+
+/* AI 요약 텍스트 */
+.ai-summary-text {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+  padding: 14px;
+  background: #F9F9F9;
+  border-radius: 10px;
+}
+
+/* ===== 상세 페이지 - 사진·리뷰 섹션 ===== */
+.review-card {
+  border: 1px solid #F0F0F0;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.review-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #E84393;
+  background: #FFF0F6;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.review-card__title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.review-card__text { font-size: 13px; color: #555; line-height: 1.6; }
+
+/* 리뷰 사진 그리드 */
+.review-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.review-photos__img { width: 100%; aspect-ratio: 4/3; background: #E0DDD8; object-fit: cover; }
+
+/* 더보기 버튼 */
+.more-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 상세 페이지 하단 고정 액션 버튼 */
+.detail-actions {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* ===== 내 위치 버튼 ===== */
+.my-location-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.my-location-btn svg { width: 20px; height: 20px; color: var(--text-light); }
+
+/* ===== 하단 네비게이션 (홈, 매장지도, 카테고리 등) ===== */
+.bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: var(--bottom-nav-height);
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.bottom-nav__item svg { width: 24px; height: 24px; color: var(--text-light); }
+.bottom-nav__item span { font-size: 10px; color: var(--text-light); }
+
+/* 활성 네비게이션 아이템 */
+.bottom-nav__item.active svg { color: var(--text); }
+.bottom-nav__item.active span { color: var(--text); font-weight: 600; }
+
+/* ===== 홈 인디케이터 (아이폰 하단 바) ===== */
+.home-indicator {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-indicator__bar {
+  width: 134px;
+  height: 5px;
+  background: #222;
+  border-radius: 3px;
+}

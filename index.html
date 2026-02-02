@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>DailyShot - 매장지도</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="status-bar__time">6:25</span>
+    <div class="status-bar__icons">
+      <div class="status-bar__signal">
+        <span style="height:4px"></span>
+        <span style="height:6px"></span>
+        <span style="height:8px"></span>
+        <span style="height:10px"></span>
+      </div>
+      <span>LTE</span>
+      <div class="status-bar__battery">
+        <div class="battery-body"></div>
+        <div class="battery-tip"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <div class="search-bar__input">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <span>지역, 매장명을 검색해주세요</span>
+    </div>
+    <div class="search-bar__help">?</div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-bar__item active" id="tab-all">전체</div>
+    <div class="tab-bar__item" id="tab-corkage">콜키지</div>
+  </div>
+
+  <!-- Map Container -->
+  <div class="map-container">
+    <!-- Filter Chips (overlaid on map) -->
+    <div class="filter-bar" id="filter-bar"></div>
+
+    <!-- Map Image -->
+    <img src="map.jpg" alt="지도" class="map-image">
+
+    <!-- Pin Layer -->
+    <div id="pin-layer"></div>
+
+    <!-- Map Tooltip -->
+    <div class="map-tooltip" id="map-tooltip">
+      <span class="map-tooltip__badge" id="tooltip-badge"></span>
+      <span class="map-tooltip__name" id="tooltip-name"></span>
+    </div>
+
+    <!-- My Location Button -->
+    <button class="my-location-btn" id="my-location-btn" aria-label="내 위치">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+      </svg>
+    </button>
+
+    <!-- Bottom Sheet Overlay -->
+    <div class="bottom-sheet-overlay" id="bottom-sheet-overlay">
+      <div class="bottom-sheet" id="bottom-sheet">
+        <div class="bottom-sheet__handle" id="sheet-handle">
+          <div class="bottom-sheet__handle-bar"></div>
+        </div>
+        <!-- Filters for expanded list view -->
+        <div class="bottom-sheet__filters" id="sheet-filters"></div>
+        <div class="bottom-sheet__content" id="sheet-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Page -->
+  <div class="confirm-page" id="confirm-page">
+    <div class="confirm-header">
+      <button class="confirm-header__back" id="confirm-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="confirm-header__title">예약하기</span>
+    </div>
+    <div class="confirm-scroll" id="confirm-scroll">
+      <p class="confirm-subtitle">아래 예약 정보를 확인해 주세요</p>
+
+      <!-- Store & Reservation Info -->
+      <div class="confirm-card" id="confirm-store-card"></div>
+
+      <!-- Booker Info -->
+      <div class="confirm-card" id="confirm-booker-card">
+        <div class="confirm-card__title">예약자 정보</div>
+        <div class="confirm-booker__name-row">
+          <span class="confirm-booker__name" id="booker-name-display">홍길동</span>
+          <input class="confirm-booker__name-input" id="booker-name-input" type="text" value="홍길동" maxlength="20">
+          <button class="confirm-booker__change-btn" id="booker-name-change">변경</button>
+        </div>
+        <div class="confirm-booker__phone-row">
+          <span class="confirm-booker__phone" id="booker-phone-display">010-12**-56**</span>
+          <input class="confirm-booker__phone-input" id="booker-phone-input" type="tel" value="010-1234-5678" maxlength="13">
+          <button class="confirm-booker__verify-btn" id="booker-phone-verify">연락처 확인</button>
+        </div>
+      </div>
+
+      <!-- Request -->
+      <div class="confirm-card">
+        <div class="confirm-card__title">매장 요청사항</div>
+        <textarea class="confirm-request__textarea" id="confirm-request" placeholder="요청사항을 상세히 입력해 주세요" maxlength="100"></textarea>
+        <div class="confirm-request__count"><span id="request-count">0</span>/100</div>
+      </div>
+
+      <!-- Payment notice -->
+      <div class="confirm-payment">
+        <div class="confirm-payment__title">결제 안내</div>
+        <div class="confirm-payment__text">
+          <svg viewBox="0 0 20 20" width="16" height="16" fill="#FF6B35"><circle cx="10" cy="10" r="10"/><text x="10" y="14" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">!</text></svg>
+          <span>콜키지는 현장결제만 가능합니다.</span>
+        </div>
+      </div>
+    </div>
+    <div class="confirm-bottom">
+      <button class="confirm-bottom__close" id="confirm-close-btn">닫기</button>
+      <button class="confirm-bottom__submit" id="confirm-submit-btn">예약 확정하러 가기</button>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="modal-success">
+    <div class="modal-box">
+      <div class="modal-box__icon">
+        <svg viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="30" stroke="#FF6B35" stroke-width="3" fill="none"/>
+          <path d="M20 33 L28 41 L44 25" stroke="#FF6B35" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="modal-box__title">콜키지 예약 완료</div>
+      <div class="modal-box__desc">예약이 완료되었습니다.<br>예약시간에 맞춰 방문해 주세요.</div>
+      <button class="modal-box__btn" id="modal-success-btn">확인</button>
+    </div>
+  </div>
+
+  <!-- Alert Modal (validation) -->
+  <div class="modal-overlay" id="modal-alert">
+    <div class="modal-box modal-box--alert">
+      <div class="modal-box__icon">
+        <svg viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="30" stroke="#FF6B35" stroke-width="3" fill="none"/>
+          <line x1="32" y1="20" x2="32" y2="36" stroke="#FF6B35" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="32" cy="44" r="2" fill="#FF6B35"/>
+        </svg>
+      </div>
+      <div class="modal-box__title">입력 정보를 확인해주세요</div>
+      <div class="modal-box__desc" id="modal-alert-desc">주종, 날짜, 시간, 인원수를<br>모두 선택해 주세요.</div>
+      <button class="modal-box__btn" id="modal-alert-btn">확인</button>
+    </div>
+  </div>
+
+  <!-- Corkage Reservation Page (hidden by default) -->
+  <div class="reservation-page" id="reservation-page">
+    <!-- Header -->
+    <div class="res-header">
+      <button class="res-header__back" id="res-back" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span class="res-header__title">콜키지 예약</span>
+      <button class="res-header__close" id="res-close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <!-- Scrollable Content -->
+    <div class="res-scroll" id="res-scroll">
+      <!-- Notice -->
+      <div class="res-notice">
+        <p class="res-notice__sub">본 매장은 이용 시 기본 예약금이 있어요!</p>
+        <div class="res-notice__row">
+          <span class="res-notice__label"><svg viewBox="0 0 20 20" width="14" height="14" fill="#FF6B35"><circle cx="10" cy="10" r="10"/><text x="10" y="14" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">!</text></svg> 기본 예약금</span>
+          <span class="res-notice__price">30,000원</span>
+        </div>
+      </div>
+
+      <!-- 주종 Section -->
+      <div class="res-section">
+        <h3 class="res-section__title">주종</h3>
+        <div class="res-drinks" id="res-drinks"></div>
+      </div>
+
+      <!-- 매장 방문 시간 Section -->
+      <div class="res-section">
+        <h3 class="res-section__title">매장 방문 시간</h3>
+        <button class="res-date-picker" id="res-date-picker">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1.5" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span id="res-date-text">예약 일자 선택하기</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" width="16" height="16" style="margin-left:auto"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <!-- Calendar (hidden) -->
+        <div class="res-calendar" id="res-calendar"></div>
+        <div class="res-times" id="res-times"></div>
+      </div>
+
+      <!-- 인원수 Section -->
+      <div class="res-section">
+        <h3 class="res-section__title">인원수</h3>
+        <div class="res-counter" id="res-people-counter">
+          <button class="res-counter__btn res-counter__minus" id="people-minus">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <span class="res-counter__value" id="people-value">0</span>
+          <button class="res-counter__btn res-counter__plus" id="people-plus">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="res-summary" id="res-summary">
+      <div class="res-summary__row">
+        <span class="res-summary__label">주종</span>
+        <span class="res-summary__detail" id="sum-drinks-detail"></span>
+        <span class="res-summary__value" id="sum-drinks-price">0원</span>
+      </div>
+      <div class="res-summary__row">
+        <span class="res-summary__label">인원수</span>
+        <span class="res-summary__detail" id="sum-people-detail"></span>
+        <span class="res-summary__value" id="sum-people-price">0원</span>
+      </div>
+      <div class="res-summary__row">
+        <span class="res-summary__label">매장 방문시간</span>
+        <span class="res-summary__detail" id="sum-time-detail"></span>
+        <span class="res-summary__value" id="sum-time-price">0원</span>
+      </div>
+      <div class="res-summary__row">
+        <span class="res-summary__label">기본 예약금</span>
+        <span class="res-summary__detail"></span>
+        <span class="res-summary__value">30,000원</span>
+      </div>
+      <div class="res-summary__total">
+        <span class="res-summary__total-label">최종 예상 금액</span>
+        <span class="res-summary__total-value" id="sum-total">30,000원</span>
+      </div>
+    </div>
+
+    <!-- Bottom Buttons -->
+    <div class="res-bottom">
+      <button class="res-bottom__close" id="res-btn-close">닫기</button>
+      <button class="res-bottom__submit" id="res-btn-submit">이 가격으로 예약하러 가기</button>
+    </div>
+  </div>
+
+  <!-- Store Detail Page (hidden by default) -->
+  <div class="detail-page" id="detail-page">
+    <!-- Detail Header -->
+    <div class="detail-header">
+      <button class="detail-header__back" id="detail-back" aria-label="뒤로가기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="detail-header__heart" id="detail-heart" aria-label="찜하기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+    </div>
+    <!-- Scrollable content -->
+    <div class="detail-scroll" id="detail-scroll">
+      <!-- Gallery -->
+      <div class="detail-gallery" id="detail-gallery"></div>
+      <!-- Store Info -->
+      <div class="detail-info" id="detail-info"></div>
+      <!-- Sticky Section Tabs -->
+      <div class="detail-tabs" id="detail-tabs">
+        <button class="detail-tabs__item active" data-section="corkage">콜키지</button>
+        <button class="detail-tabs__item" data-section="menu">메뉴</button>
+        <button class="detail-tabs__item" data-section="ai">AI 요약</button>
+        <button class="detail-tabs__item" data-section="review">사진·리뷰</button>
+      </div>
+      <!-- Sections -->
+      <div id="section-corkage" class="detail-section"></div>
+      <div id="section-menu" class="detail-section"></div>
+      <div id="section-ai" class="detail-section"></div>
+      <div id="section-review" class="detail-section"></div>
+    </div>
+    <!-- Fixed bottom actions -->
+    <div class="detail-actions">
+      <button class="store-actions__btn store-actions__btn--pickup">픽업 주류 고르기</button>
+      <button class="store-actions__btn store-actions__btn--corkage">콜키지 예약하기</button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <div class="bottom-nav__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
+      </svg>
+      <span>홈</span>
+    </div>
+    <div class="bottom-nav__item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+        <circle cx="12" cy="9" r="2.5"/>
+      </svg>
+      <span>매장지도</span>
+    </div>
+    <div class="bottom-nav__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      <span>카테고리</span>
+    </div>
+    <div class="bottom-nav__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>
+      </svg>
+      <span>슬킷리스트</span>
+    </div>
+    <div class="bottom-nav__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>마이페이지</span>
+    </div>
+  </nav>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator">
+    <div class="home-indicator__bar"></div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
