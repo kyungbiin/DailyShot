@@ -4,140 +4,140 @@ const STORE_DATA = [
     id: 1, name: '사유의서재 강남', category: '양식', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 강남대로98길 11 5층 사유의서재',
     hours: '월 - 일 오전 11:30 ~ 오후 11:00',
-    photos: ['https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store1.jpg', './images/store2.jpg'],
     top: 28, left: 18
   },
   {
     id: 2, name: '먼데이블루스', category: '와인', type: 'free',
     badgeText: '콜키지 무료', address: '서울 서초구 강남대로53길 11 삼성쉐르빌2 1층',
     hours: '월 - 일 오전 11:00 ~ 오후 11:00',
-    photos: ['https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store3.jpg', './images/store4.jpg'],
     top: 45, left: 24
   },
   {
     id: 3, name: '비노파라다이소', category: '이탈리안', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 역삼로 234 2층',
     hours: '월 - 토 오전 11:30 ~ 오후 10:30',
-    photos: ['https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store4.jpg', './images/store5.jpg'],
     top: 22, left: 72
   },
   {
     id: 4, name: '르꼬숑', category: '프렌치', type: 'free',
     badgeText: '콜키지 무료', address: '서울 강남구 테헤란로 112 1층',
     hours: '화 - 일 오후 12:00 ~ 오후 10:00',
-    photos: ['https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store6.jpg', './images/store7.jpg'],
     top: 50, left: 70
   },
   {
     id: 5, name: '와인앤다인', category: '양식', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 서초구 서초대로 301 지하1층',
     hours: '월 - 일 오후 5:00 ~ 오전 1:00',
-    photos: ['https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1474722883778-792e7990302f?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store8.jpg', './images/store9.jpg'],
     top: 55, left: 15
   },
   {
     id: 6, name: '오스테리아 비앙카', category: '이탈리안', type: 'free',
     badgeText: '콜키지 무료', address: '서울 강남구 선릉로 525',
     hours: '월 - 토 오전 11:30 ~ 오후 10:00',
-    photos: ['https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1485686531765-ba63b07845a7?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store5.jpg', './images/store10.jpg'],
     top: 35, left: 9
   },
   {
     id: 7, name: '라망드셰프', category: '프렌치', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 강남대로 390',
     hours: '화 - 일 오후 12:00 ~ 오후 10:00',
-    photos: ['https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store6.jpg', './images/store7.jpg'],
     top: 33, left: 17
   },
   {
     id: 8, name: '더스테이크하우스', category: '스테이크', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 역삼동 678-9',
     hours: '월 - 일 오전 11:00 ~ 오후 11:00',
-    photos: ['https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store9.jpg', './images/store10.jpg'],
     top: 20, left: 78
   },
   {
     id: 9, name: '블루밍가든', category: '양식', type: 'free',
     badgeText: '콜키지 무료', address: '서울 서초구 반포대로 45',
     hours: '월 - 일 오전 10:00 ~ 오후 10:00',
-    photos: ['https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1525268323446-0505b6fe7778?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store2.jpg', './images/store8.jpg'],
     top: 30, left: 55
   },
   {
     id: 10, name: '트라토리아 서울', category: '이탈리안', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 도산대로 123',
     hours: '화 - 일 오후 12:00 ~ 오후 11:00',
-    photos: ['https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store8.jpg', './images/store10.jpg'],
     top: 38, left: 82
   },
   {
     id: 11, name: '카사델비노', category: '와인바', type: 'free',
     badgeText: '콜키지 무료', address: '서울 강남구 학동로 234',
     hours: '월 - 토 오후 5:00 ~ 오전 2:00',
-    photos: ['https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store1.jpg', './images/store3.jpg'],
     top: 47, left: 40
   },
   {
     id: 12, name: '피노누아 다이닝', category: '양식', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 서초구 서초중앙로 78',
     hours: '월 - 일 오전 11:30 ~ 오후 10:30',
-    photos: ['https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1560624052-449f5ddf0c31?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store7.jpg', './images/store4.jpg'],
     top: 53, left: 35
   },
   {
     id: 13, name: '리베르타', category: '프렌치', type: 'free',
     badgeText: '콜키지 무료', address: '서울 강남구 논현로 567',
     hours: '화 - 일 오후 12:00 ~ 오후 10:00',
-    photos: ['https://images.unsplash.com/photo-1592861956120-e524fc739696?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1560624052-449f5ddf0c31?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store5.jpg', './images/store6.jpg'],
     top: 60, left: 52
   },
   {
     id: 14, name: '셀러1988', category: '와인바', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 서초구 강남대로 201',
     hours: '월 - 토 오후 6:00 ~ 오전 1:00',
-    photos: ['https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store3.jpg', './images/store9.jpg'],
     top: 62, left: 22
   },
   {
     id: 15, name: '에노테카 서울', category: '이탈리안', type: 'free',
     badgeText: '콜키지 무료', address: '서울 강남구 삼성로 89',
     hours: '월 - 일 오전 11:00 ~ 오후 10:30',
-    photos: ['https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store10.jpg', './images/store6.jpg'],
     top: 68, left: 30
   },
   {
     id: 16, name: '비스트로 드 빈', category: '프렌치', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 봉은사로 456',
     hours: '화 - 일 오후 12:00 ~ 오후 11:00',
-    photos: ['https://images.unsplash.com/photo-1549488344-cbb6c34cf08b?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store7.jpg', './images/store1.jpg'],
     top: 42, left: 50
   },
   {
     id: 17, name: '소믈리에 테이블', category: '양식', type: 'free',
     badgeText: '콜키지 무료', address: '서울 서초구 방배로 67',
     hours: '월 - 토 오후 5:30 ~ 오후 11:00',
-    photos: ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store2.jpg', './images/store5.jpg'],
     top: 75, left: 62
   },
   {
     id: 18, name: '포도나무 아래', category: '한식', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 역삼로 345',
     hours: '월 - 일 오전 11:30 ~ 오후 9:30',
-    photos: ['https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store10.jpg', './images/store4.jpg'],
     top: 15, left: 50
   },
   {
     id: 19, name: '꼬르동블루 강남', category: '프렌치', type: 'corkage',
     badgeText: '콜키지 가능', address: '서울 강남구 언주로 789',
     hours: '화 - 일 오후 12:00 ~ 오후 10:00',
-    photos: ['https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store8.jpg', './images/store1.jpg'],
     top: 85, left: 40
   },
   {
     id: 20, name: '더 와인키친', category: '양식', type: 'free',
     badgeText: '콜키지 무료', address: '서울 서초구 사평대로 56',
     hours: '월 - 일 오후 12:00 ~ 오후 11:00',
-    photos: ['https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=400&h=300&q=80', 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=400&h=300&q=80'],
+    photos: ['./images/store3.jpg', './images/store9.jpg'],
     top: 22, left: 17
   },
 ];
@@ -292,8 +292,8 @@ function storeCardHTML(store) {
         </div>
       </div>
       <div class="store-photos">
-        <img class="store-photos__img" src="${store.photos[0]}" alt="${store.name}" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] store photo 0:',this.src);this.style.background='#E8E8E8'">
-        <img class="store-photos__img" src="${store.photos[1]}" alt="${store.name}" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] store photo 1:',this.src);this.style.background='#E8E8E8'">
+        <img class="store-photos__img" src="${store.photos[0]}" alt="${store.name}">
+        <img class="store-photos__img" src="${store.photos[1]}" alt="${store.name}">
       </div>
     </div>`;
 }
@@ -481,9 +481,9 @@ const DETAIL_EXTRA = {
   },
   menu: {
     recommended: [
-      { name: '바질크림 파스타', desc: '신선한 바질페스토 크림파스타', price: '25,000원', img: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=200&h=200&q=80' },
-      { name: '와인 무제한 1인', desc: '2시간 동안 다양한 보틀와인 무제한 이용', price: '30,000원', img: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=200&h=200&q=80' },
-      { name: '치즈할 라구토마토 파스타', desc: '2시간 동안 다양한 보틀와인 무제한 이용', price: '25,000원', img: 'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=200&h=200&q=80' },
+      { name: '바질크림 파스타', desc: '신선한 바질페스토 크림파스타', price: '25,000원', img: './images/food1.jpg' },
+      { name: '와인 무제한 1인', desc: '2시간 동안 다양한 보틀와인 무제한 이용', price: '30,000원', img: './images/food2.jpg' },
+      { name: '치즈할 라구토마토 파스타', desc: '2시간 동안 다양한 보틀와인 무제한 이용', price: '25,000원', img: './images/food3.jpg' },
     ],
   },
   ai: {
@@ -526,9 +526,9 @@ function openDetailPage(store) {
 
   // Gallery
   detailGallery.innerHTML = `
-    <img class="detail-gallery__main" src="${store.photos[0]}" alt="${store.name}" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] gallery main:',this.src);this.style.background='#3A3A4A'">
-    <img class="detail-gallery__thumb" src="${store.photos[1]}" alt="${store.name}" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] gallery thumb:',this.src);this.style.background='#4A3A3A'">
-    <img class="detail-gallery__thumb" src="${store.photos[0]}" alt="${store.name}" referrerpolicy="no-referrer" crossorigin="anonymous" style="filter:brightness(0.8)" onerror="console.error('[IMG FAIL] gallery thumb2:',this.src);this.style.background='#4A3A3A'">`;
+    <img class="detail-gallery__main" src="${store.photos[0]}" alt="${store.name}">
+    <img class="detail-gallery__thumb" src="${store.photos[1]}" alt="${store.name}">
+    <img class="detail-gallery__thumb" src="${store.photos[0]}" alt="${store.name}" style="filter:brightness(0.8)">`;
 
   // Info
   const badgeClass = store.type === 'free' ? 'store-card__badge--free' : 'store-card__badge--corkage';
@@ -554,8 +554,8 @@ function openDetailPage(store) {
 
   // Corkage section
   const cork = DETAIL_EXTRA.corkage;
-  const drinkImages = { '와인': '/DailyShot/wine.png', '사케': '/DailyShot/sake.png', '위스키': '/DailyShot/whiskey.png', '백주': '/DailyShot/beer.png', '우리술': '/DailyShot/korean.png' };
-  const serviceImages = { '얼음': '/DailyShot/ice.png', '와인잔': '/DailyShot/wineglass.png', '위스키잔': '/DailyShot/whiskeyglass.png', '사케잔': '/DailyShot/sakeglass.png', '칠링 바스켓': '/DailyShot/chillingbucket.png' };
+  const drinkImages = { '와인': './wine.png', '사케': './sake.png', '위스키': './whiskey.png', '백주': './beer.png', '우리술': './korean.png' };
+  const serviceImages = { '얼음': './ice.png', '와인잔': './wineglass.png', '위스키잔': './whiskeyglass.png', '사케잔': './sakeglass.png', '칠링 바스켓': './chillingbucket.png' };
 
   document.getElementById('section-corkage').innerHTML = `
     <div class="detail-section__title">콜키지</div>
@@ -585,14 +585,14 @@ function openDetailPage(store) {
   document.getElementById('section-menu').innerHTML = `
     <div class="detail-section__title">메뉴</div>
     <div class="menu-board">
-      <img class="menu-board__img" src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&h=400&q=80" alt="메뉴1" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] menu board:',this.src);this.style.background='#E8E4DE'">
-      <img class="menu-board__img" src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=400&h=400&q=80" alt="메뉴2" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] menu board:',this.src);this.style.background='#E8E4DE'">
-      <img class="menu-board__img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&h=400&q=80" alt="메뉴3" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] menu board:',this.src);this.style.background='#E8E4DE'">
+      <img class="menu-board__img" src="./images/menu1.jpg" alt="메뉴1">
+      <img class="menu-board__img" src="./images/menu2.jpg" alt="메뉴2">
+      <img class="menu-board__img" src="./images/menu3.jpg" alt="메뉴3">
     </div>
     <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:#222">추천 메뉴</div>
     ${menu.recommended.map(item => `
       <div class="menu-item">
-        <img class="menu-item__img" src="${item.img}" alt="${item.name}" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] menu item:',this.src);this.style.background='#E8E4DE'">
+        <img class="menu-item__img" src="${item.img}" alt="${item.name}">
         <div class="menu-item__info">
           <span class="menu-item__badge">추천</span>
           <span class="menu-item__name">${item.name}</span>
@@ -631,8 +631,8 @@ function openDetailPage(store) {
       <div class="review-card__badge">Best ${rev.title}</div>
       <div class="review-card__text">${rev.text}</div>
       <div class="review-photos">
-        <img class="review-photos__img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=400&h=300&q=80" alt="리뷰사진1" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] review:',this.src);this.style.background='#E0DDD8'">
-        <img class="review-photos__img" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&h=300&q=80" alt="리뷰사진2" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="console.error('[IMG FAIL] review:',this.src);this.style.background='#E0DDD8'">
+        <img class="review-photos__img" src="./images/review1.jpg" alt="리뷰사진1">
+        <img class="review-photos__img" src="./images/review2.jpg" alt="리뷰사진2">
       </div>
     </div>
     <button class="more-btn">더보기</button>`;
@@ -780,10 +780,10 @@ let resCalMonth = null; // {year, month}
 
 // Drink SVGs (reuse from detail page)
 const resDrinkImages = {
-  '와인': '/DailyShot/wine.png',
-  '사케': '/DailyShot/sake.png',
-  '위스키': '/DailyShot/whiskey.png',
-  '백주': '/DailyShot/beer.png',
+  '와인': './wine.png',
+  '사케': './sake.png',
+  '위스키': './whiskey.png',
+  '백주': './beer.png',
 };
 
 function openReservationPage(fromPage) {
