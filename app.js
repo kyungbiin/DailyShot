@@ -554,8 +554,8 @@ function openDetailPage(store) {
 
   // Corkage section
   const cork = DETAIL_EXTRA.corkage;
-  const drinkImages = { '와인': './wine.png', '사케': './sake.png', '위스키': './whiskey.png', '백주': './baijiu.png', '우리술': './korean-liquor.png' };
-  const serviceImages = { '얼음': './ice.png', '와인잔': './wine-glass.png', '위스키잔': './whiskey-glass.png', '사케잔': './sake-glass.png', '칠링 바스켓': './chilling-basket.png' };
+  const drinkImages = { '와인': './wine.png', '사케': './sake.png', '위스키': './whiskey.png', '백주': './beer.png', '우리술': './korean.png' };
+  const serviceImages = { '얼음': './ice.png', '와인잔': './wineglass.png', '위스키잔': './whiskeyglass.png', '사케잔': './sakeglass.png', '칠링 바스켓': './chillingbucket.png' };
 
   document.getElementById('section-corkage').innerHTML = `
     <div class="detail-section__title">콜키지</div>
@@ -567,14 +567,14 @@ function openDetailPage(store) {
         <div class="corkage-drink">
           <span class="corkage-drink__name">${d.name}</span>
           <span class="corkage-drink__price">${d.price}</span>
-          <div class="corkage-drink__icon"><img src="${drinkImages[d.name]}" alt="${d.name}"></div>
+          <div class="corkage-drink__icon"><img src="${drinkImages[d.name]}" alt="${d.name}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%22100%22><rect width=%2280%22 height=%22100%22 fill=%22%23eee%22 rx=%228%22/><text x=%2240%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2212%22>${d.name}</text></svg>'"></div>
         </div>`).join('')}
     </div>
     <div class="detail-section__title" style="font-size:14px;margin-top:8px;">제공 서비스</div>
     <div class="corkage-services">
       ${cork.services.map(s => `
         <div class="corkage-service">
-          <div class="corkage-service__icon"><img src="${serviceImages[s]}" alt="${s}"></div>
+          <div class="corkage-service__icon"><img src="${serviceImages[s]}" alt="${s}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2252%22 height=%2252%22><rect width=%2252%22 height=%2252%22 fill=%22%23eee%22 rx=%228%22/><text x=%2226%22 y=%2230%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2210%22>${s}</text></svg>'"></div>
           <span class="corkage-service__name">${s}</span>
         </div>`).join('')}
     </div>
@@ -783,7 +783,7 @@ const resDrinkImages = {
   '와인': './wine.png',
   '사케': './sake.png',
   '위스키': './whiskey.png',
-  '백주': './baijiu.png',
+  '백주': './beer.png',
 };
 
 function openReservationPage(fromPage) {
@@ -821,7 +821,7 @@ function renderResDrinks() {
     return `<div class="res-drink-card">
       <span class="res-drink-card__name">${d.name}</span>
       <span class="res-drink-card__price">${d.priceLabel}</span>
-      <div class="res-drink-card__img"><img src="${resDrinkImages[d.name] || ''}" alt="${d.name}"></div>
+      <div class="res-drink-card__img"><img src="${resDrinkImages[d.name] || ''}" alt="${d.name}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2280%22><rect width=%2260%22 height=%2280%22 fill=%22%23eee%22 rx=%228%22/><text x=%2230%22 y=%2244%22 text-anchor=%22middle%22 fill=%22%23aaa%22 font-size=%2210%22>${d.name}</text></svg>'"></div>
       <div class="res-drink-card__controls">
         ${hasQty ? `
           <button class="res-drink-card__ctrl-btn res-drink-card__ctrl-btn--active" data-drink="${d.name}" data-action="minus">
