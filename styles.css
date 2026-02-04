@@ -235,17 +235,12 @@ html, body {
   border-color: var(--text);
 }
 
-/* 필터 칩 앞 색상 점 */
-.filter-chip__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+/* 필터 칩 앞 핀 아이콘 */
+.filter-chip__pin {
+  width: 10px;
+  height: 13px;
   flex-shrink: 0;
 }
-
-.filter-chip__dot--partner { background: #7C3AED; }
-.filter-chip__dot--corkage { background: var(--primary); }
-.filter-chip__dot--free { background: #E84393; }
 
 /* ===== 지도 컨테이너 ===== */
 .map-container {

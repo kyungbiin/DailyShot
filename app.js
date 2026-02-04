@@ -209,6 +209,16 @@ function getVisibleStores() {
   return stores;
 }
 
+// ===== 필터 칩용 작은 핀 아이콘 =====
+function filterPinSVG(type) {
+  const colors = { partner: '#7C3AED', corkage: '#FF6B35', free: '#E84393' };
+  const color = colors[type] || '#222';
+  return `<svg class="filter-chip__pin" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M14 0C6.27 0 0 6.27 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.27 21.73 0 14 0z" fill="${color}"/>
+    <circle cx="14" cy="13" r="5" fill="#fff"/>
+  </svg>`;
+}
+
 // ===== 필터 칩 렌더링 =====
 function renderFilters(target) {
   const filters = currentTab === 'all'
@@ -226,11 +236,9 @@ function renderFilters(target) {
 
   target.innerHTML = filters.map(f => {
     const isActive = activeFilter === f.key;
-    const dotHTML = f.dot
-      ? `<span class="filter-chip__dot filter-chip__dot--${f.dot}"></span>`
-      : '';
+    const pinHTML = f.dot ? filterPinSVG(f.dot) : '';
     return `<button class="filter-chip ${isActive ? 'active' : ''}" data-filter="${f.key}">
-      ${dotHTML}${f.label}
+      ${pinHTML}${f.label}
     </button>`;
   }).join('');
 
