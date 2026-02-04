@@ -243,15 +243,29 @@ html, body {
   flex-shrink: 0;
 }
 
-.filter-chip__dot--partner { background: #222; }
+.filter-chip__dot--partner { background: #7C3AED; }
 .filter-chip__dot--corkage { background: var(--primary); }
-.filter-chip__dot--free { background: var(--primary); }
+.filter-chip__dot--free { background: #E84393; }
 
 /* ===== 지도 컨테이너 ===== */
 .map-container {
   flex: 1;
   position: relative;
   overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 지도 패닝 레이어 */
+.map-pan-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 150%;
+  transform-origin: 0 0;
+  will-change: transform;
 }
 
 /* 지도 배경 이미지 */
@@ -259,6 +273,15 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
+}
+
+#pin-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 /* ===== 지도 핀 ===== */
@@ -1351,6 +1374,244 @@ html, body {
 
 .detail-info__notice svg { width: 14px; height: 14px; flex-shrink: 0; color: #CC6B1E; margin-top: 1px; }
 
+/* 복사/전화 버튼 */
+.detail-info__copy-btn,
+.detail-info__call-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 6px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.detail-info__copy-btn svg,
+.detail-info__call-btn svg {
+  width: 12px;
+  height: 12px;
+  color: var(--primary);
+}
+
+/* 매장 정보 더보기 버튼 */
+.detail-info__more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  background: #F5F5F5;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.detail-info__more-btn:hover {
+  background: #EBEBEB;
+}
+
+.detail-info__more-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.detail-info__more-btn.active svg {
+  transform: rotate(180deg);
+}
+
+/* 확장된 매장 정보 영역 */
+.detail-info__expanded {
+  display: none;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.detail-info__expanded.active {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 정보 섹션 */
+.detail-info__section {
+  margin-bottom: 20px;
+}
+
+.detail-info__section:last-child {
+  margin-bottom: 0;
+}
+
+.detail-info__section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+/* 편의시설 그리드 */
+.detail-info__facilities {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.detail-info__facility {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  background: #F9F9F9;
+  border-radius: 10px;
+  position: relative;
+}
+
+.detail-info__facility--disabled {
+  opacity: 0.5;
+}
+
+.detail-info__facility-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-info__facility-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--primary);
+}
+
+.detail-info__facility--disabled .detail-info__facility-icon svg {
+  color: #999;
+}
+
+.detail-info__facility-name {
+  font-size: 12px;
+  color: #555;
+  text-align: center;
+}
+
+.detail-info__facility-unavailable {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 9px;
+  color: #E53E3E;
+  background: #FFEEEE;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* 주차 정보 */
+.detail-info__parking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #F5F5F5;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #555;
+}
+
+.detail-info__parking svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* 결제수단 태그 */
+.detail-info__payment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.detail-info__payment-tag {
+  padding: 6px 12px;
+  background: #F5F5F5;
+  border-radius: 16px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* 찾아오시는 길 */
+.detail-info__directions {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+  padding: 12px;
+  background: #F9F9F9;
+  border-radius: 8px;
+}
+
+/* 매장 소개 */
+.detail-info__description {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* SNS 링크 */
+.detail-info__sns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-info__sns-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--primary);
+}
+
+.detail-info__sns-item svg {
+  color: #555;
+  flex-shrink: 0;
+}
+
+/* 매장 내부 사진 */
+.detail-info__interior-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.detail-info__interior-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  background: #E8E8E8;
+}
+
 /* ===== 상세 페이지 - 고정 섹션 탭 (콜키지/메뉴/AI요약/사진리뷰) ===== */
 .detail-tabs {
   display: flex;
@@ -1591,7 +1852,10 @@ html, body {
 
 /* 더보기 버튼 */
 .more-btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   width: 100%;
   padding: 12px;
   margin-top: 12px;
@@ -1603,6 +1867,226 @@ html, body {
   color: #555;
   cursor: pointer;
   text-align: center;
+  transition: all 0.2s;
+}
+
+.more-btn:hover {
+  background: #F5F5F5;
+}
+
+.more-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.more-btn.active svg {
+  transform: rotate(180deg);
+}
+
+/* 섹션 확장 영역 */
+.section-expanded {
+  display: none;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.section-expanded.active {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+/* 확장 블록 */
+.expanded-block {
+  margin-bottom: 20px;
+}
+
+.expanded-block:last-child {
+  margin-bottom: 0;
+}
+
+.expanded-block__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 특별 혜택 */
+.special-offers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.special-offer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+  background: linear-gradient(135deg, #FFF8F2 0%, #FFEFE5 100%);
+  border-radius: 10px;
+  border: 1px solid #FFE0CC;
+}
+
+.special-offer__badge {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.special-offer__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.special-offer__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.special-offer__desc {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 추가 서비스 태그 */
+.additional-services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.additional-service-tag {
+  padding: 8px 14px;
+  background: #F5F5F5;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #555;
+}
+
+/* 콜키지 정보 리스트 */
+.corkage-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.corkage-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.corkage-info-item svg {
+  flex-shrink: 0;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+/* 확장 안내 */
+.expanded-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  background: #FFF8F0;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #CC6B1E;
+  line-height: 1.5;
+  margin-top: 16px;
+}
+
+.expanded-notice svg {
+  flex-shrink: 0;
+  color: #CC6B1E;
+  margin-top: 1px;
+}
+
+/* 메뉴 뱃지 변형 */
+.menu-item__badge--alt {
+  background: #E8F4FF;
+  color: #2196F3;
+}
+
+/* 전체 사진 그리드 */
+.all-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.all-photos-grid__img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  background: #E8E8E8;
+}
+
+.photo-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-light);
+  margin-left: 4px;
+}
+
+/* 리뷰 카드 확장 */
+.review-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.review-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.review-card__author {
+  font-weight: 600;
+  color: #555;
+}
+
+.review-card__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* 리뷰 뱃지 변형 */
+.review-card__badge--revisit {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.review-card__badge--regular {
+  background: #FFF3E0;
+  color: #FF9800;
+}
+
+.review-card__badge--recommend {
+  background: #E3F2FD;
+  color: #2196F3;
 }
 
 /* 상세 페이지 하단 고정 액션 버튼 */

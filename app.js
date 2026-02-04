@@ -120,22 +120,22 @@ const STORE_DATA = [
     top: 75, left: 62
   },
   {
-    id: 18, name: '포도나무 아래', category: '한식', type: 'corkage',
-    badgeText: '콜키지 가능', address: '서울 강남구 역삼로 345',
+    id: 18, name: '포도나무 아래', category: '한식', type: 'partner',
+    badgeText: '파트너', address: '서울 강남구 역삼로 345',
     hours: '월 - 일 오전 11:30 ~ 오후 9:30',
     photos: ['./images/store10.jpg', './images/store4.jpg'],
     top: 15, left: 50
   },
   {
-    id: 19, name: '꼬르동블루 강남', category: '프렌치', type: 'corkage',
-    badgeText: '콜키지 가능', address: '서울 강남구 언주로 789',
+    id: 19, name: '꼬르동블루 강남', category: '프렌치', type: 'partner',
+    badgeText: '파트너', address: '서울 강남구 언주로 789',
     hours: '화 - 일 오후 12:00 ~ 오후 10:00',
     photos: ['./images/store8.jpg', './images/store1.jpg'],
     top: 85, left: 40
   },
   {
-    id: 20, name: '더 와인키친', category: '양식', type: 'free',
-    badgeText: '콜키지 무료', address: '서울 서초구 사평대로 56',
+    id: 20, name: '더 와인키친', category: '양식', type: 'partner',
+    badgeText: '파트너', address: '서울 서초구 사평대로 56',
     hours: '월 - 일 오후 12:00 ~ 오후 11:00',
     photos: ['./images/store3.jpg', './images/store9.jpg'],
     top: 22, left: 17
@@ -164,7 +164,8 @@ const tooltipName = document.getElementById('tooltip-name');
 
 // ===== SVG 아이콘 헬퍼 함수 =====
 function pinSVG(type) {
-  const color = type === 'free' ? '#E84393' : '#FF6B35';
+  const colors = { partner: '#7C3AED', corkage: '#FF6B35', free: '#E84393' };
+  const color = colors[type] || '#222';
   return `<svg viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M14 0C6.27 0 0 6.27 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.27 21.73 0 14 0z" fill="${color}"/>
     <circle cx="14" cy="13" r="5" fill="#fff"/>
@@ -423,6 +424,84 @@ document.querySelector('.map-container').addEventListener('click', (e) => {
   if (sheetState !== 'closed') setSheetState('closed');
 });
 
+// ===== 지도 패닝(드래그/스와이프) =====
+(function initMapPan() {
+  const panLayer = document.getElementById('map-pan-layer');
+  const container = document.querySelector('.map-container');
+  if (!panLayer || !container) return;
+
+  let isPanning = false;
+  let startX = 0, startY = 0;
+  let panX = 0, panY = 0;
+  let curPanX = 0, curPanY = 0;
+
+  // 초기 위치: 중앙 (150% 크기이므로 -25%만큼 오프셋)
+  function getInitialOffset() {
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+    return { x: -cw * 0.25, y: -ch * 0.25 };
+  }
+
+  function clampPan(x, y) {
+    const cw = container.clientWidth;
+    const ch = container.clientHeight;
+    const pw = panLayer.scrollWidth;
+    const ph = panLayer.scrollHeight;
+    const minX = -(pw - cw);
+    const minY = -(ph - ch);
+    return {
+      x: Math.min(0, Math.max(minX, x)),
+      y: Math.min(0, Math.max(minY, y)),
+    };
+  }
+
+  function applyTransform(x, y) {
+    panLayer.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  // 초기화
+  const init = getInitialOffset();
+  const clamped = clampPan(init.x, init.y);
+  panX = clamped.x;
+  panY = clamped.y;
+  applyTransform(panX, panY);
+
+  function getPointer(e) {
+    if (e.touches && e.touches.length > 0) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  container.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('.filter-bar') || e.target.closest('.my-location-btn') || e.target.closest('.bottom-sheet-overlay')) return;
+    isPanning = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    curPanX = panX;
+    curPanY = panY;
+    panLayer.style.transition = 'none';
+    e.preventDefault();
+  });
+
+  window.addEventListener('pointermove', (e) => {
+    if (!isPanning) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    const c = clampPan(curPanX + dx, curPanY + dy);
+    applyTransform(c.x, c.y);
+  });
+
+  window.addEventListener('pointerup', (e) => {
+    if (!isPanning) return;
+    isPanning = false;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    const c = clampPan(curPanX + dx, curPanY + dy);
+    panX = c.x;
+    panY = c.y;
+    panLayer.style.transition = '';
+  });
+})();
+
 // ===== 탭 전환 =====
 function switchTab(tab) {
   currentTab = tab;
@@ -468,6 +547,23 @@ const homeIndicator = document.querySelector('.home-indicator');
 const DETAIL_EXTRA = {
   phone: '010-2197-0957',
   notice: '휴게시간은 목업 및 변동 불가합니다. 오후 3:00 - 오후 4:30',
+  // 매장 정보 더보기 데이터
+  storeInfo: {
+    parking: '건물 내 주차 가능 (2시간 무료)',
+    facilities: [
+      { name: '와이파이', icon: 'wifi', available: true },
+      { name: '주차', icon: 'parking', available: true },
+      { name: '반려동물', icon: 'pet', available: false },
+      { name: '예약', icon: 'reservation', available: true },
+      { name: '단체석', icon: 'group', available: true },
+      { name: '콘센트', icon: 'outlet', available: true },
+    ],
+    payment: ['신용카드', '현금', '카카오페이', '네이버페이'],
+    sns: { instagram: '@sayuuiseojae_gangnam', website: 'www.sayuuiseojae.com' },
+    description: '사유의 서재는 강남 한복판에 위치한 프리미엄 다이닝 레스토랑입니다. 세련된 인테리어와 아늑한 분위기 속에서 특별한 식사를 즐기실 수 있습니다. 와인 애호가들을 위한 다양한 와인 셀렉션과 함께 정성스럽게 준비된 요리를 맛보세요.',
+    directions: '강남역 11번 출구에서 도보 5분\n강남대로를 따라 직진 후 첫 번째 골목에서 좌회전',
+    interiorPhotos: ['./images/interior1.jpg', './images/interior2.jpg', './images/interior3.jpg', './images/interior4.jpg'],
+  },
   corkage: {
     tags: ['와인 좋아하는 고객님들의 만족도가 높아요', '술과 잘 어울리는 음식이 많아요'],
     drinks: [
@@ -478,12 +574,32 @@ const DETAIL_EXTRA = {
       { name: '우리술', price: '-' },
     ],
     services: ['얼음', '와인잔', '위스키잔', '사케잔', '칠링 바스켓'],
+    // 더보기 추가 정보
+    extra: {
+      policy: '콜키지는 1인 1병 기준이며, 추가 병당 동일 요금이 적용됩니다.',
+      notice: '콜키지 예약 시 미리 주종을 알려주시면 더 나은 서비스를 제공해 드립니다.',
+      additionalServices: ['디캔팅', '에어레이팅', '온도 맞춤 서비스', '페어링 추천'],
+      availableTime: '런치 11:30 - 15:00 / 디너 17:30 - 22:00',
+      maxBottles: '테이블당 최대 5병까지 가능',
+      specialOffers: [
+        { title: '평일 런치 할인', desc: '평일 점심 콜키지 50% 할인', badge: 'HOT' },
+        { title: '생일 이벤트', desc: '생일 고객 콜키지 1병 무료', badge: 'EVENT' },
+      ],
+    },
   },
   menu: {
     recommended: [
       { name: '바질크림 파스타', desc: '신선한 바질페스토 크림파스타', price: '25,000원', img: './images/food1.jpg' },
       { name: '와인 무제한 1인', desc: '2시간 동안 다양한 보틀와인 무제한 이용', price: '30,000원', img: './images/food2.jpg' },
       { name: '치즈할 라구토마토 파스타', desc: '2시간 동안 다양한 보틀와인 무제한 이용', price: '25,000원', img: './images/food3.jpg' },
+    ],
+    // 더보기 추가 메뉴
+    extra: [
+      { name: '트러플 리조또', desc: '블랙 트러플을 듬뿍 올린 크리미한 리조또', price: '32,000원', img: './images/food4.jpg' },
+      { name: '안심 스테이크', desc: '최상급 한우 안심을 사용한 프리미엄 스테이크', price: '58,000원', img: './images/food5.jpg' },
+      { name: '해산물 플래터', desc: '신선한 새우, 홍합, 바지락 모듬', price: '45,000원', img: './images/food6.jpg' },
+      { name: '티라미수', desc: '진한 에스프레소와 마스카포네 치즈의 조화', price: '12,000원', img: './images/food1.jpg', badge: '디저트' },
+      { name: '치즈 플레이트', desc: '다양한 수입 치즈 5종과 크래커', price: '28,000원', img: './images/food2.jpg', badge: '안주' },
     ],
   },
   ai: {
@@ -498,8 +614,52 @@ const DETAIL_EXTRA = {
   review: {
     title: '만족해요',
     text: '처음가봤 먹는 바람에 사진을 이번에 찍었더라여 여긴이사하니 아, 통김스타일 것 같습니다.',
+    // 더보기 추가 리뷰
+    extra: [
+      {
+        badge: '재방문',
+        title: '분위기 최고!',
+        text: '데이트하기 정말 좋은 곳이에요. 조명도 은은하고 음악도 좋아서 대화하기 편했어요. 와인 추천도 잘 해주셔서 맛있게 먹었습니다.',
+        photos: ['./images/review3.jpg', './images/review4.jpg'],
+        author: '와인러버',
+        date: '2024.01.15'
+      },
+      {
+        badge: '단골',
+        title: '서비스가 좋아요',
+        text: '직원분들이 정말 친절하시고, 와인 서비스도 프로페셔널해요. 콜키지 비용도 합리적이고 다음에도 또 올 예정입니다.',
+        photos: ['./images/interior1.jpg'],
+        author: '미식가',
+        date: '2024.01.10'
+      },
+      {
+        badge: '추천',
+        title: '음식이 맛있어요',
+        text: '파스타가 정말 맛있었어요. 특히 바질크림 파스타는 다른 곳에서 못 먹어본 맛이었습니다. 스테이크도 굽기가 완벽했어요.',
+        photos: ['./images/food4.jpg', './images/food5.jpg'],
+        author: '파스타매니아',
+        date: '2024.01.05'
+      },
+    ],
+    allPhotos: [
+      './images/review1.jpg', './images/review2.jpg', './images/review3.jpg', './images/review4.jpg',
+      './images/interior1.jpg', './images/interior2.jpg', './images/food4.jpg', './images/food5.jpg'
+    ],
   },
 };
+
+// 편의시설 아이콘 SVG 헬퍼
+function facilityIconSVG(icon) {
+  const icons = {
+    wifi: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.55a11 11 0 0114 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>`,
+    parking: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg>`,
+    pet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 015 5v3.5a3.5 3.5 0 01-7 0V17a2 2 0 00-2-2 2 2 0 00-2 2"/></svg>`,
+    reservation: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>`,
+    group: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>`,
+    outlet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="M9 14h6"/></svg>`,
+  };
+  return icons[icon] || '';
+}
 
 // 상세 페이지가 어디서 열렸는지 추적
 let detailOpenedFrom = null; // 'half' | 'expanded'
@@ -532,6 +692,7 @@ function openDetailPage(store) {
 
   // Info
   const badgeClass = store.type === 'free' ? 'store-card__badge--free' : 'store-card__badge--corkage';
+  const storeInfo = DETAIL_EXTRA.storeInfo;
   detailInfo.innerHTML = `
     <div class="detail-info__badge-row">
       <span class="store-card__badge ${badgeClass}">${store.badgeText}</span>
@@ -540,8 +701,13 @@ function openDetailPage(store) {
     </div>
     <div class="detail-info__row">
       ${locationSVG()}
-      <span>주소복사</span>
+      <span>${store.address}</span>
+      <button class="detail-info__copy-btn">${copySVG()} 복사</button>
+    </div>
+    <div class="detail-info__row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
       <span>${DETAIL_EXTRA.phone}</span>
+      <button class="detail-info__call-btn">전화하기</button>
     </div>
     <div class="detail-info__row">
       ${clockSVG()}
@@ -550,7 +716,83 @@ function openDetailPage(store) {
     <div class="detail-info__notice">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
       <span>${DETAIL_EXTRA.notice}</span>
+    </div>
+    <button class="detail-info__more-btn" id="info-more-btn">
+      <span>매장 정보 더보기</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="detail-info__expanded" id="info-expanded">
+      <!-- 편의시설 -->
+      <div class="detail-info__section">
+        <div class="detail-info__section-title">편의시설</div>
+        <div class="detail-info__facilities">
+          ${storeInfo.facilities.map(f => `
+            <div class="detail-info__facility ${f.available ? '' : 'detail-info__facility--disabled'}">
+              <div class="detail-info__facility-icon">${facilityIconSVG(f.icon)}</div>
+              <span class="detail-info__facility-name">${f.name}</span>
+              ${!f.available ? '<span class="detail-info__facility-unavailable">불가</span>' : ''}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      <!-- 주차 정보 -->
+      <div class="detail-info__section">
+        <div class="detail-info__section-title">주차 정보</div>
+        <div class="detail-info__parking">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg>
+          <span>${storeInfo.parking}</span>
+        </div>
+      </div>
+      <!-- 결제수단 -->
+      <div class="detail-info__section">
+        <div class="detail-info__section-title">결제수단</div>
+        <div class="detail-info__payment-tags">
+          ${storeInfo.payment.map(p => `<span class="detail-info__payment-tag">${p}</span>`).join('')}
+        </div>
+      </div>
+      <!-- 찾아오시는 길 -->
+      <div class="detail-info__section">
+        <div class="detail-info__section-title">찾아오시는 길</div>
+        <div class="detail-info__directions">${storeInfo.directions.replace(/\n/g, '<br>')}</div>
+      </div>
+      <!-- 매장 소개 -->
+      <div class="detail-info__section">
+        <div class="detail-info__section-title">매장 소개</div>
+        <div class="detail-info__description">${storeInfo.description}</div>
+      </div>
+      <!-- SNS -->
+      <div class="detail-info__section">
+        <div class="detail-info__section-title">SNS</div>
+        <div class="detail-info__sns">
+          <div class="detail-info__sns-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zM17.5 6.5h.01"/></svg>
+            <span>${storeInfo.sns.instagram}</span>
+          </div>
+          <div class="detail-info__sns-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            <span>${storeInfo.sns.website}</span>
+          </div>
+        </div>
+      </div>
+      <!-- 매장 사진 -->
+      <div class="detail-info__section">
+        <div class="detail-info__section-title">매장 내부</div>
+        <div class="detail-info__interior-photos">
+          ${storeInfo.interiorPhotos.map(photo => `
+            <img class="detail-info__interior-img" src="${photo}" alt="매장 내부">
+          `).join('')}
+        </div>
+      </div>
     </div>`;
+
+  // 더보기 버튼 이벤트
+  const moreBtn = document.getElementById('info-more-btn');
+  const expandedSection = document.getElementById('info-expanded');
+  moreBtn.addEventListener('click', () => {
+    const isExpanded = expandedSection.classList.toggle('active');
+    moreBtn.classList.toggle('active', isExpanded);
+    moreBtn.querySelector('span').textContent = isExpanded ? '매장 정보 접기' : '매장 정보 더보기';
+  });
 
   // Corkage section
   const cork = DETAIL_EXTRA.corkage;
@@ -578,7 +820,57 @@ function openDetailPage(store) {
           <span class="corkage-service__name">${s}</span>
         </div>`).join('')}
     </div>
-    <button class="more-btn">더보기</button>`;
+    <button class="more-btn" id="corkage-more-btn">
+      <span>더보기</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="section-expanded" id="corkage-expanded">
+      <!-- 특별 혜택 -->
+      <div class="expanded-block">
+        <div class="expanded-block__title">특별 혜택</div>
+        <div class="special-offers">
+          ${cork.extra.specialOffers.map(offer => `
+            <div class="special-offer">
+              <span class="special-offer__badge">${offer.badge}</span>
+              <div class="special-offer__content">
+                <span class="special-offer__title">${offer.title}</span>
+                <span class="special-offer__desc">${offer.desc}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+      <!-- 추가 서비스 -->
+      <div class="expanded-block">
+        <div class="expanded-block__title">추가 서비스</div>
+        <div class="additional-services">
+          ${cork.extra.additionalServices.map(s => `<span class="additional-service-tag">${s}</span>`).join('')}
+        </div>
+      </div>
+      <!-- 이용 안내 -->
+      <div class="expanded-block">
+        <div class="expanded-block__title">이용 안내</div>
+        <div class="corkage-info-list">
+          <div class="corkage-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            <span>${cork.extra.availableTime}</span>
+          </div>
+          <div class="corkage-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
+            <span>${cork.extra.maxBottles}</span>
+          </div>
+          <div class="corkage-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span>${cork.extra.policy}</span>
+          </div>
+        </div>
+      </div>
+      <!-- 안내사항 -->
+      <div class="expanded-notice">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        <span>${cork.extra.notice}</span>
+      </div>
+    </div>`;
 
   // Menu section
   const menu = DETAIL_EXTRA.menu;
@@ -600,7 +892,23 @@ function openDetailPage(store) {
           <span class="menu-item__price">${item.price}</span>
         </div>
       </div>`).join('')}
-    <button class="more-btn">더보기</button>`;
+    <button class="more-btn" id="menu-more-btn">
+      <span>더보기</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="section-expanded" id="menu-expanded">
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:#222">전체 메뉴</div>
+      ${menu.extra.map(item => `
+        <div class="menu-item">
+          <img class="menu-item__img" src="${item.img}" alt="${item.name}">
+          <div class="menu-item__info">
+            <span class="menu-item__badge ${item.badge ? 'menu-item__badge--alt' : ''}">${item.badge || '인기'}</span>
+            <span class="menu-item__name">${item.name}</span>
+            <span class="menu-item__desc">${item.desc}</span>
+            <span class="menu-item__price">${item.price}</span>
+          </div>
+        </div>`).join('')}
+    </div>`;
 
   // AI section
   const ai = DETAIL_EXTRA.ai;
@@ -635,10 +943,68 @@ function openDetailPage(store) {
         <img class="review-photos__img" src="./images/review2.jpg" alt="리뷰사진2">
       </div>
     </div>
-    <button class="more-btn">더보기</button>`;
+    <button class="more-btn" id="review-more-btn">
+      <span>더보기</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <div class="section-expanded" id="review-expanded">
+      <!-- 전체 사진 -->
+      <div class="expanded-block">
+        <div class="expanded-block__title">전체 사진 <span class="photo-count">${rev.allPhotos.length}</span></div>
+        <div class="all-photos-grid">
+          ${rev.allPhotos.map(photo => `
+            <img class="all-photos-grid__img" src="${photo}" alt="사진">
+          `).join('')}
+        </div>
+      </div>
+      <!-- 추가 리뷰 -->
+      <div class="expanded-block">
+        <div class="expanded-block__title">리뷰 더보기</div>
+        ${rev.extra.map(r => `
+          <div class="review-card">
+            <div class="review-card__header">
+              <div class="review-card__badge review-card__badge--${r.badge === '재방문' ? 'revisit' : r.badge === '단골' ? 'regular' : 'recommend'}">${r.badge}</div>
+              <div class="review-card__meta">
+                <span class="review-card__author">${r.author}</span>
+                <span class="review-card__date">${r.date}</span>
+              </div>
+            </div>
+            <div class="review-card__title">${r.title}</div>
+            <div class="review-card__text">${r.text}</div>
+            ${r.photos.length > 0 ? `
+              <div class="review-photos">
+                ${r.photos.map(p => `<img class="review-photos__img" src="${p}" alt="리뷰사진">`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
 
   detailScroll.scrollTop = 0;
   setupDetailTabs();
+  setupSectionMoreButtons();
+}
+
+// 각 섹션 더보기 버튼 설정
+function setupSectionMoreButtons() {
+  const sections = [
+    { btnId: 'corkage-more-btn', expandedId: 'corkage-expanded' },
+    { btnId: 'menu-more-btn', expandedId: 'menu-expanded' },
+    { btnId: 'review-more-btn', expandedId: 'review-expanded' },
+  ];
+
+  sections.forEach(({ btnId, expandedId }) => {
+    const btn = document.getElementById(btnId);
+    const expanded = document.getElementById(expandedId);
+    if (btn && expanded) {
+      btn.addEventListener('click', () => {
+        const isExpanded = expanded.classList.toggle('active');
+        btn.classList.toggle('active', isExpanded);
+        btn.querySelector('span').textContent = isExpanded ? '접기' : '더보기';
+      });
+    }
+  });
 }
 
 function closeDetailPage() {
@@ -961,7 +1327,7 @@ function updateResSummary() {
   document.getElementById('sum-time-price').textContent = timeDetail ? '추가금 없음' : '0원';
 
   // Total
-  const total = BASE_FEE + drinksTotal;
+  const total = drinksTotal;
   document.getElementById('sum-total').textContent = total.toLocaleString() + '원';
 }
 
