@@ -11,7 +11,7 @@
 
 <div class="app-shell">
 
-  <!-- Status Bar -->
+  <!-- 상태바 -->
   <div class="status-bar">
     <span class="status-bar__time">6:25</span>
     <div class="status-bar__icons">
@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <!-- Search Bar -->
+  <!-- 검색바 -->
   <div class="search-bar">
     <div class="search-bar__input">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round">
@@ -41,33 +41,33 @@
     <div class="search-bar__help">?</div>
   </div>
 
-  <!-- Tab Bar -->
+  <!-- 탭바 -->
   <div class="tab-bar">
     <div class="tab-bar__item active" id="tab-all">전체</div>
     <div class="tab-bar__item" id="tab-corkage">콜키지</div>
   </div>
 
-  <!-- Map Container -->
+  <!-- 지도 컨테이너 -->
   <div class="map-container">
-    <!-- Filter Chips (overlaid on map) -->
+    <!-- 필터 칩 (지도 위에 오버레이) -->
     <div class="filter-bar" id="filter-bar"></div>
 
-    <!-- Pan Layer (draggable) -->
+    <!-- 패닝 레이어 (드래그 가능) -->
     <div class="map-pan-layer" id="map-pan-layer">
-      <!-- Map Image -->
+      <!-- 지도 이미지 -->
       <img src="./map.jpg" alt="지도" class="map-image">
 
-      <!-- Pin Layer -->
+      <!-- 핀 레이어 -->
       <div id="pin-layer"></div>
 
-      <!-- Map Tooltip -->
+      <!-- 지도 툴팁 -->
       <div class="map-tooltip" id="map-tooltip">
       <span class="map-tooltip__badge" id="tooltip-badge"></span>
       <span class="map-tooltip__name" id="tooltip-name"></span>
     </div>
-    </div><!-- /map-pan-layer -->
+    </div><!-- /패닝 레이어 -->
 
-    <!-- My Location Button -->
+    <!-- 내 위치 버튼 -->
     <button class="my-location-btn" id="my-location-btn" aria-label="내 위치">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="12" cy="12" r="3"/>
@@ -75,20 +75,20 @@
       </svg>
     </button>
 
-    <!-- Bottom Sheet Overlay -->
+    <!-- 바텀시트 오버레이 -->
     <div class="bottom-sheet-overlay" id="bottom-sheet-overlay">
       <div class="bottom-sheet" id="bottom-sheet">
         <div class="bottom-sheet__handle" id="sheet-handle">
           <div class="bottom-sheet__handle-bar"></div>
         </div>
-        <!-- Filters for expanded list view -->
+        <!-- 확장 리스트 뷰용 필터 -->
         <div class="bottom-sheet__filters" id="sheet-filters"></div>
         <div class="bottom-sheet__content" id="sheet-content"></div>
       </div>
     </div>
   </div>
 
-  <!-- Confirm Page -->
+  <!-- 예약 확인 페이지 -->
   <div class="confirm-page" id="confirm-page">
     <div class="confirm-header">
       <button class="confirm-header__back" id="confirm-back">
@@ -99,10 +99,10 @@
     <div class="confirm-scroll" id="confirm-scroll">
       <p class="confirm-subtitle">아래 예약 정보를 확인해 주세요</p>
 
-      <!-- Store & Reservation Info -->
+      <!-- 매장 및 예약 정보 -->
       <div class="confirm-card" id="confirm-store-card"></div>
 
-      <!-- Booker Info -->
+      <!-- 예약자 정보 -->
       <div class="confirm-card" id="confirm-booker-card">
         <div class="confirm-card__title">예약자 정보</div>
         <div class="confirm-booker__name-row">
@@ -117,14 +117,14 @@
         </div>
       </div>
 
-      <!-- Request -->
+      <!-- 요청사항 -->
       <div class="confirm-card">
         <div class="confirm-card__title">매장 요청사항</div>
         <textarea class="confirm-request__textarea" id="confirm-request" placeholder="요청사항을 상세히 입력해 주세요" maxlength="100"></textarea>
         <div class="confirm-request__count"><span id="request-count">0</span>/100</div>
       </div>
 
-      <!-- Payment notice -->
+      <!-- 결제 안내 -->
       <div class="confirm-payment">
         <div class="confirm-payment__title">결제 안내</div>
         <div class="confirm-payment__text">
@@ -139,7 +139,7 @@
     </div>
   </div>
 
-  <!-- Success Modal -->
+  <!-- 성공 모달 -->
   <div class="modal-overlay" id="modal-success">
     <div class="modal-box">
       <div class="modal-box__icon">
@@ -154,7 +154,7 @@
     </div>
   </div>
 
-  <!-- Alert Modal (validation) -->
+  <!-- 알림 모달 (유효성 검사) -->
   <div class="modal-overlay" id="modal-alert">
     <div class="modal-box modal-box--alert">
       <div class="modal-box__icon">
@@ -170,9 +170,9 @@
     </div>
   </div>
 
-  <!-- Corkage Reservation Page (hidden by default) -->
+  <!-- 콜키지 예약 페이지 (기본 숨김) -->
   <div class="reservation-page" id="reservation-page">
-    <!-- Header -->
+    <!-- 헤더 -->
     <div class="res-header">
       <button class="res-header__back" id="res-back" aria-label="뒤로가기">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -182,7 +182,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
     </div>
-    <!-- Scrollable Content -->
+    <!-- 스크롤 가능한 컨텐츠 -->
     <div class="res-scroll" id="res-scroll">
       <!-- 주종 Section -->
       <div class="res-section">
@@ -198,7 +198,7 @@
           <span id="res-date-text">예약 일자 선택하기</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" width="16" height="16" style="margin-left:auto"><path d="M9 18l6-6-6-6"/></svg>
         </button>
-        <!-- Calendar (hidden) -->
+        <!-- 캘린더 (숨김) -->
         <div class="res-calendar" id="res-calendar"></div>
         <div class="res-times" id="res-times"></div>
       </div>
@@ -218,7 +218,7 @@
       </div>
     </div>
 
-    <!-- Summary -->
+    <!-- 요약 -->
     <div class="res-summary" id="res-summary">
       <div class="res-summary__row">
         <span class="res-summary__label">주종</span>
@@ -241,16 +241,16 @@
       </div>
     </div>
 
-    <!-- Bottom Buttons -->
+    <!-- 하단 버튼 -->
     <div class="res-bottom">
       <button class="res-bottom__close" id="res-btn-close">닫기</button>
       <button class="res-bottom__submit" id="res-btn-submit">이 가격으로 예약하러 가기</button>
     </div>
   </div>
 
-  <!-- Store Detail Page (hidden by default) -->
+  <!-- 매장 상세 페이지 (기본 숨김) -->
   <div class="detail-page" id="detail-page">
-    <!-- Detail Header -->
+    <!-- 상세 헤더 -->
     <div class="detail-header">
       <button class="detail-header__back" id="detail-back" aria-label="뒤로가기">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
@@ -259,33 +259,33 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
       </button>
     </div>
-    <!-- Scrollable content -->
+    <!-- 스크롤 가능한 컨텐츠 -->
     <div class="detail-scroll" id="detail-scroll">
-      <!-- Gallery -->
+      <!-- 갤러리 -->
       <div class="detail-gallery" id="detail-gallery"></div>
-      <!-- Store Info -->
+      <!-- 매장 정보 -->
       <div class="detail-info" id="detail-info"></div>
-      <!-- Sticky Section Tabs -->
+      <!-- 고정 섹션 탭 -->
       <div class="detail-tabs" id="detail-tabs">
         <button class="detail-tabs__item active" data-section="corkage">콜키지</button>
         <button class="detail-tabs__item" data-section="menu">메뉴</button>
         <button class="detail-tabs__item" data-section="ai">AI 요약</button>
         <button class="detail-tabs__item" data-section="review">사진·리뷰</button>
       </div>
-      <!-- Sections -->
+      <!-- 섹션들 -->
       <div id="section-corkage" class="detail-section"></div>
       <div id="section-menu" class="detail-section"></div>
       <div id="section-ai" class="detail-section"></div>
       <div id="section-review" class="detail-section"></div>
     </div>
-    <!-- Fixed bottom actions -->
+    <!-- 하단 고정 액션 버튼 -->
     <div class="detail-actions">
       <button class="store-actions__btn store-actions__btn--pickup">픽업 주류 고르기</button>
       <button class="store-actions__btn store-actions__btn--corkage">콜키지 예약하기</button>
     </div>
   </div>
 
-  <!-- Bottom Navigation -->
+  <!-- 하단 네비게이션 -->
   <nav class="bottom-nav">
     <div class="bottom-nav__item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -324,7 +324,7 @@
     </div>
   </nav>
 
-  <!-- Home Indicator -->
+  <!-- 홈 인디케이터 -->
   <div class="home-indicator">
     <div class="home-indicator__bar"></div>
   </div>

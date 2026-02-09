@@ -271,7 +271,7 @@ function renderPins() {
     el.addEventListener('click', (e) => {
       e.stopPropagation();
       const store = STORE_DATA.find(s => s.id === Number(el.dataset.id));
-      if (store && currentTab === 'corkage') {
+      if (store && (currentTab === 'corkage' || (currentTab === 'all' && (store.type === 'corkage' || store.type === 'free')))) {
         onPinClick(store, el);
       }
     });
@@ -674,31 +674,31 @@ let detailOpenedFrom = null; // 'half' | 'expanded'
 let detailOpenedStore = null;
 
 function openDetailPage(store) {
-  // Remember previous state before closing
-  detailOpenedFrom = sheetState; // 'half' or 'expanded'
+  // 닫기 전에 이전 상태 저장
+  detailOpenedFrom = sheetState; // 'half' 또는 'expanded'
   detailOpenedStore = store;
 
-  // Hide sheet without clearing selectedStore
+  // selectedStore를 초기화하지 않고 시트 숨기기
   overlay.classList.remove('active', 'expanded');
   sheetState = 'closed';
 
-  // Hide map UI
+  // 지도 UI 숨기기
   searchBar.style.display = 'none';
   mainTabBar.style.display = 'none';
   mapView.style.display = 'none';
   bottomNav.style.display = 'none';
   homeIndicator.style.display = 'none';
 
-  // Show detail
+  // 상세 페이지 표시
   detailPage.classList.add('active');
 
-  // Gallery
+  // 갤러리
   detailGallery.innerHTML = `
     <img class="detail-gallery__main" src="${store.photos[0]}" alt="${store.name}">
     <img class="detail-gallery__thumb" src="${store.photos[1]}" alt="${store.name}">
     <img class="detail-gallery__thumb" src="${store.photos[0]}" alt="${store.name}" style="filter:brightness(0.8)">`;
 
-  // Info
+  // 매장 정보
   const badgeClass = store.type === 'free' ? 'store-card__badge--free' : 'store-card__badge--corkage';
   const storeInfo = DETAIL_EXTRA.storeInfo;
   detailInfo.innerHTML = `
@@ -802,7 +802,7 @@ function openDetailPage(store) {
     moreBtn.querySelector('span').textContent = isExpanded ? '매장 정보 접기' : '매장 정보 더보기';
   });
 
-  // Corkage section
+  // 콜키지 섹션
   const cork = DETAIL_EXTRA.corkage;
   const drinkImages = { '와인': './wine.png', '사케': './sake.png', '위스키': './whiskey.png', '백주': './beer.png', '우리술': './korean.png' };
   const serviceImages = { '얼음': './ice.png', '와인잔': './wineglass.png', '위스키잔': './whiskeyglass.png', '사케잔': './sakeglass.png', '칠링 바스켓': './chillingbucket.png' };
@@ -880,7 +880,7 @@ function openDetailPage(store) {
       </div>
     </div>`;
 
-  // Menu section
+  // 메뉴 섹션
   const menu = DETAIL_EXTRA.menu;
   document.getElementById('section-menu').innerHTML = `
     <div class="detail-section__title">메뉴</div>
@@ -918,7 +918,7 @@ function openDetailPage(store) {
         </div>`).join('')}
     </div>`;
 
-  // AI section
+  // AI 요약 섹션
   const ai = DETAIL_EXTRA.ai;
   document.getElementById('section-ai').innerHTML = `
     <div class="detail-section__title">
@@ -939,7 +939,7 @@ function openDetailPage(store) {
     </div>
     <div class="ai-summary-text">${ai.summary.replace(/\n/g, '<br>')}</div>`;
 
-  // Review section
+  // 리뷰 섹션
   const rev = DETAIL_EXTRA.review;
   document.getElementById('section-review').innerHTML = `
     <div class="detail-section__title">사진 · 리뷰</div>
@@ -1024,11 +1024,11 @@ function closeDetailPage() {
   homeIndicator.style.display = '';
 }
 
-// Back button - return to previous sheet state
+// 뒤로가기 버튼 - 이전 시트 상태로 복원
 document.getElementById('detail-back').addEventListener('click', () => {
   closeDetailPage();
 
-  // Restore the sheet state we came from
+  // 이전 시트 상태 복원
   if (detailOpenedStore) {
     selectedStore = detailOpenedStore;
     if (detailOpenedFrom === 'half') {
@@ -1037,14 +1037,14 @@ document.getElementById('detail-back').addEventListener('click', () => {
     } else if (detailOpenedFrom === 'expanded') {
       setSheetState('expanded');
     } else {
-      // Default: show half sheet
+      // 기본값: 하프 시트 표시
       renderHalfSheet(selectedStore);
       setSheetState('half');
     }
   }
 });
 
-// Sticky section tabs: click to scroll
+// 고정 섹션 탭: 클릭 시 스크롤
 function setupDetailTabs() {
   const tabBtns = detailTabs.querySelectorAll('.detail-tabs__item');
   tabBtns.forEach(btn => {
@@ -1061,7 +1061,7 @@ function setupDetailTabs() {
     });
   });
 
-  // Update active tab on scroll
+  // 스크롤 시 활성 탭 업데이트
   detailScroll.addEventListener('scroll', () => {
     const sections = ['corkage', 'menu', 'ai', 'review'];
     const tabsBottom = detailTabs.getBoundingClientRect().bottom;
@@ -1081,7 +1081,7 @@ function setupDetailTabs() {
   });
 }
 
-// Make store cards clickable -> open detail
+// 매장 카드 클릭 시 상세 페이지 열기
 function bindStoreCardClicks(container) {
   container.querySelectorAll('.store-card').forEach(card => {
     card.style.cursor = 'pointer';
@@ -1093,7 +1093,7 @@ function bindStoreCardClicks(container) {
   });
 }
 
-// Patch renderHalfSheet and renderStoreList to bind clicks
+// renderHalfSheet와 renderStoreList에 클릭 바인딩 추가
 const _origRenderHalf = renderHalfSheet;
 renderHalfSheet = function(store) {
   _origRenderHalf(store);
@@ -1106,7 +1106,7 @@ renderStoreList = function() {
   bindStoreCardClicks(sheetContent);
 };
 
-// ===== Navigation History =====
+// ===== 네비게이션 히스토리 =====
 const navHistory = [];
 
 function pushNav(page) {
@@ -1129,7 +1129,7 @@ function popNav() {
   }
 }
 
-// ===== Corkage Reservation Page =====
+// ===== 콜키지 예약 페이지 =====
 const resPage = document.getElementById('reservation-page');
 const resDrinksContainer = document.getElementById('res-drinks');
 const resTimesContainer = document.getElementById('res-times');
@@ -1152,7 +1152,7 @@ let resSelectedTime = null;
 let resPeople = 0;
 let resCalMonth = null; // {year, month}
 
-// Drink SVGs (reuse from detail page)
+// 주류 이미지 (상세 페이지에서 재사용)
 const resDrinkImages = {
   '와인': './wine.png',
   '사케': './sake.png',
@@ -1164,7 +1164,7 @@ function openReservationPage(fromPage) {
   pushNav(fromPage);
   resPage.classList.add('active');
 
-  // Reset state
+  // 상태 초기화
   resDrinkQtys = {};
   RES_DRINKS.forEach(d => resDrinkQtys[d.name] = 0);
   resSelectedDate = null;
@@ -1294,7 +1294,7 @@ function renderResTimes() {
   });
 }
 
-// People counter
+// 인원수 카운터
 document.getElementById('people-minus').addEventListener('click', () => {
   resPeople = Math.max(0, resPeople - 1);
   document.getElementById('people-value').textContent = resPeople;
@@ -1307,7 +1307,7 @@ document.getElementById('people-plus').addEventListener('click', () => {
 });
 
 function updateResSummary() {
-  // Drinks
+  // 주류
   let drinksTotal = 0;
   const drinkParts = [];
   RES_DRINKS.forEach(d => {
@@ -1320,11 +1320,11 @@ function updateResSummary() {
   document.getElementById('sum-drinks-detail').textContent = drinkParts.join(' · ') || '';
   document.getElementById('sum-drinks-price').textContent = drinksTotal > 0 ? drinksTotal.toLocaleString() + '원' : '0원';
 
-  // People
+  // 인원수
   document.getElementById('sum-people-detail').textContent = resPeople > 0 ? resPeople + '명' : '';
   document.getElementById('sum-people-price').textContent = resPeople > 0 ? '추가금 없음' : '0원';
 
-  // Time
+  // 시간
   let timeDetail = '';
   if (resSelectedDate && resSelectedTime) {
     const mm = String(resSelectedDate.getMonth() + 1).padStart(2, '0');
@@ -1334,12 +1334,11 @@ function updateResSummary() {
   document.getElementById('sum-time-detail').textContent = timeDetail;
   document.getElementById('sum-time-price').textContent = timeDetail ? '추가금 없음' : '0원';
 
-  // Total
-  const total = drinksTotal;
-  document.getElementById('sum-total').textContent = total.toLocaleString() + '원';
+  // 합계
+  document.getElementById('sum-total').textContent = drinksTotal.toLocaleString() + '원';
 }
 
-// Reservation page navigation
+// 예약 페이지 네비게이션
 document.getElementById('res-back').addEventListener('click', popNav);
 document.getElementById('res-close').addEventListener('click', () => {
   navHistory.length = 0;
@@ -1352,9 +1351,9 @@ document.getElementById('res-btn-close').addEventListener('click', () => {
   closeDetailPage();
 });
 
-// ===== Wire up all "콜키지 예약하기" buttons =====
+// ===== 모든 "콜키지 예약하기" 버튼 연결 =====
 document.addEventListener('click', (e) => {
-  // Skip if inside confirm-page or modals
+  // 확인 페이지나 모달 내부에서는 건너뛰기
   if (e.target.closest('.confirm-page') || e.target.closest('.modal-overlay')) return;
 
   const btn = e.target.closest('.store-actions__btn--corkage');
@@ -1369,7 +1368,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// ===== Confirm Page =====
+// ===== 예약 확인 페이지 =====
 const confirmPage = document.getElementById('confirm-page');
 const confirmStoreCard = document.getElementById('confirm-store-card');
 const confirmScroll = document.getElementById('confirm-scroll');
@@ -1378,7 +1377,7 @@ function openConfirmPage() {
   pushNav('reservation');
   confirmPage.classList.add('active');
 
-  // Build drink summary
+  // 주류 요약 생성
   const drinkParts = [];
   let drinksTotal = 0;
   RES_DRINKS.forEach(d => {
@@ -1394,7 +1393,7 @@ function openConfirmPage() {
   const dayNames = ['일','월','화','수','목','금','토'];
   const dayName = dayNames[resSelectedDate.getDay()];
 
-  // Convert time to 오후 format
+  // 시간을 오전/오후 형식으로 변환
   const hour = parseInt(resSelectedTime.split(':')[0]);
   const min = resSelectedTime.split(':')[1];
   const ampm = hour >= 12 ? '오후' : '오전';
@@ -1422,7 +1421,7 @@ function openConfirmPage() {
       <span class="confirm-card__value">${drinksTotal.toLocaleString()}원</span>
     </div>`;
 
-  // Reset booker fields
+  // 예약자 정보 필드 초기화
   document.getElementById('booker-name-display').classList.remove('hidden');
   document.getElementById('booker-name-input').classList.remove('active');
   document.getElementById('booker-name-display').textContent = '홍길동';
@@ -1441,10 +1440,10 @@ function closeConfirmPage() {
   confirmPage.classList.remove('active');
 }
 
-// Confirm back
+// 확인 페이지 뒤로가기
 document.getElementById('confirm-back').addEventListener('click', () => {
   closeConfirmPage();
-  // Go back to reservation page
+  // 예약 페이지로 돌아가기
   if (navHistory.length > 0 && navHistory[navHistory.length - 1] === 'reservation') {
     navHistory.pop();
     resPage.classList.add('active');
@@ -1458,20 +1457,20 @@ document.getElementById('confirm-close-btn').addEventListener('click', () => {
   closeDetailPage();
 });
 
-// Booker name change
+// 예약자 이름 변경
 document.getElementById('booker-name-change').addEventListener('click', () => {
   const display = document.getElementById('booker-name-display');
   const input = document.getElementById('booker-name-input');
   const isEditing = input.classList.contains('active');
 
   if (isEditing) {
-    // Save
+    // 저장
     display.textContent = input.value || '홍길동';
     display.classList.remove('hidden');
     input.classList.remove('active');
     document.getElementById('booker-name-change').textContent = '변경';
   } else {
-    // Edit
+    // 편집
     input.value = display.textContent;
     display.classList.add('hidden');
     input.classList.add('active');
@@ -1480,7 +1479,7 @@ document.getElementById('booker-name-change').addEventListener('click', () => {
   }
 });
 
-// Phone verify
+// 연락처 확인
 document.getElementById('booker-phone-verify').addEventListener('click', () => {
   const display = document.getElementById('booker-phone-display');
   const input = document.getElementById('booker-phone-input');
@@ -1500,14 +1499,14 @@ document.getElementById('booker-phone-verify').addEventListener('click', () => {
   }
 });
 
-// Request textarea counter
+// 요청사항 텍스트 카운터
 document.getElementById('confirm-request').addEventListener('input', (e) => {
   document.getElementById('request-count').textContent = e.target.value.length;
 });
 
-// Submit reservation -> "이 가격으로 예약하러 가기"
+// 예약 제출 -> "이 가격으로 예약하러 가기"
 document.getElementById('res-btn-submit').addEventListener('click', () => {
-  // Validate first (don't close resPage yet)
+  // 먼저 유효성 검사 (아직 resPage 닫지 않음)
   const hasDrinks = RES_DRINKS.some(d => resDrinkQtys[d.name] > 0);
   if (!hasDrinks || !resSelectedDate || !resSelectedTime || resPeople <= 0) {
     const missing = [];
@@ -1519,17 +1518,17 @@ document.getElementById('res-btn-submit').addEventListener('click', () => {
     document.getElementById('modal-alert').classList.add('active');
     return;
   }
-  // Valid: hide res page and open confirm
+  // 유효함: 예약 페이지 숨기고 확인 페이지 열기
   resPage.classList.remove('active');
   openConfirmPage();
 });
 
-// Confirm submit -> show success modal
+// 예약 확정 제출 -> 성공 모달 표시
 document.getElementById('confirm-submit-btn').addEventListener('click', () => {
   document.getElementById('modal-success').classList.add('active');
 });
 
-// Success modal -> close everything, back to map
+// 성공 모달 -> 모두 닫고 지도로 돌아가기
 document.getElementById('modal-success-btn').addEventListener('click', () => {
   document.getElementById('modal-success').classList.remove('active');
   navHistory.length = 0;
@@ -1538,11 +1537,11 @@ document.getElementById('modal-success-btn').addEventListener('click', () => {
   closeDetailPage();
 });
 
-// Alert modal -> close
+// 알림 모달 닫기
 document.getElementById('modal-alert-btn').addEventListener('click', () => {
   document.getElementById('modal-alert').classList.remove('active');
 });
 
-// ===== Init =====
+// ===== 초기화 =====
 renderAllFilters();
 renderPins();
