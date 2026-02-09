@@ -394,7 +394,7 @@ html, body {
   padding: 5px 12px 5px 6px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.18);
   white-space: nowrap;
-  transform: translate(-50%, -120%);
+  transform: translate(-50%, calc(-100% - 40px));
   pointer-events: none;
 }
 

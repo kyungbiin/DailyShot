@@ -245,6 +245,14 @@ function renderFilters(target) {
   target.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', () => {
       activeFilter = chip.dataset.filter;
+
+      // 전체 탭에서 콜키지 가능/무료 선택 시 콜키지 탭으로 자동 전환
+      if (currentTab === 'all' && (activeFilter === 'corkage' || activeFilter === 'free')) {
+        currentTab = 'corkage';
+        tabAll.classList.remove('active');
+        tabCorkage.classList.add('active');
+      }
+
       renderAllFilters();
       renderPins();
       if (sheetState === 'expanded') renderStoreList();
@@ -272,6 +280,13 @@ function renderPins() {
       e.stopPropagation();
       const store = STORE_DATA.find(s => s.id === Number(el.dataset.id));
       if (store && (currentTab === 'corkage' || (currentTab === 'all' && (store.type === 'corkage' || store.type === 'free')))) {
+        // 전체 탭에서 콜키지/무료 핀 클릭 시 콜키지 탭으로 전환
+        if (currentTab === 'all') {
+          currentTab = 'corkage';
+          tabAll.classList.remove('active');
+          tabCorkage.classList.add('active');
+          renderAllFilters();
+        }
         onPinClick(store, el);
       }
     });
