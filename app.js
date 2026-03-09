@@ -819,8 +819,8 @@ function openDetailPage(store) {
 
   // 콜키지 섹션
   const cork = DETAIL_EXTRA.corkage;
-  const drinkImages = { '와인': './wine.png', '사케': './sake.png', '위스키': './whiskey.png', '백주': './beer.png', '우리술': './korean.png' };
-  const serviceImages = { '얼음': './ice.png', '와인잔': './wineglass.png', '위스키잔': './whiskeyglass.png', '사케잔': './sakeglass.png', '칠링 바스켓': './chillingbucket.png' };
+  const drinkImages = { '와인': './images/wine.png', '사케': './images/sake.png', '위스키': './images/whiskey.png', '백주': './images/beer.png', '우리술': './images/korean.png' };
+  const serviceImages = { '얼음': './images/ice.png', '와인잔': './images/wineglass.png', '위스키잔': './images/whiskeyglass.png', '사케잔': './images/sakeglass.png', '칠링 바스켓': './images/chillingbucket.png' };
 
   document.getElementById('section-corkage').innerHTML = `
     <div class="detail-section__title">콜키지</div>
@@ -1169,10 +1169,10 @@ let resCalMonth = null; // {year, month}
 
 // 주류 이미지 (상세 페이지에서 재사용)
 const resDrinkImages = {
-  '와인': './wine.png',
-  '사케': './sake.png',
-  '위스키': './whiskey.png',
-  '백주': './beer.png',
+  '와인': './images/wine.png',
+  '사케': './images/sake.png',
+  '위스키': './images/whiskey.png',
+  '백주': './images/beer.png',
 };
 
 function openReservationPage(fromPage) {
